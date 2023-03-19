@@ -1,0 +1,20 @@
+<table id="data" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Usuario</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>rol_admin</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in usuarios %}
+        <tr>
+          <td>{{ user.username }}</td>
+          <td>{{ user.nombre }}</td>
+          <td>{{ user.apellido }}</td>
+          <td>{{ user.rol_admin }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>

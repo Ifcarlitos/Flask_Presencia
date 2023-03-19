@@ -1,0 +1,53 @@
+<!-- Pagina con dos botones, ver registro de entrada y salida o de horas-->
+<!-- Path: templates\Registro.html -->
+
+{% extends './base.html' %}
+{% block titulo %}Pagina Principal{% endblock %}
+
+{% block body %}
+{% include './nav.html' %}
+<div class="container">
+    <div id="ParteReciclablePadre">
+        <div id="ParteReciclable">
+            <div class="row mt-2">
+                <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="verRegistros()">
+                    <div class="row mt-2">
+                        <div class="col-sm">Revisar Marcajes</div>
+                    </div>
+                </button>
+            </div>
+            <div class="row mt-2">
+                <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="verHorasRegistradas()">
+                    <div class="row mt-2">
+                        <div class="col-sm">Revisar Horas Registradas</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function verRegistros() {
+        $.ajax({
+            url: "/Registro/verRegistros",
+            method: "POST",
+            data: {
+            },
+            success: function (result) {
+                $("#ParteReciclable").html(result);
+            }
+        });
+    }
+    function verHorasRegistradas() {
+        $.ajax({
+            url: "/Registro/verHorasRegistradas",
+            method: "POST",
+            data: {
+            },
+            success: function (result) {
+                $("#ParteReciclable").html(result);
+            }
+        });
+    }
+</script>
+{% endblock %}

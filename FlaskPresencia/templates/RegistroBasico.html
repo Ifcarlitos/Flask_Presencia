@@ -1,0 +1,302 @@
+{% extends './base.html' %}
+
+{% block titulo %}Login{% endblock %}
+
+{% block CSSPersonalizado %}
+<link rel="stylesheet" href="/static/css/signin.css" crossorigin="anonymous">
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                <div class="text-center">
+                    <img class="mb-4" src="/static/img/logo-salle.png" alt="" width="200" height="100">
+                </div>
+            </div>
+        </div>
+        <div id="ParteReciclablePadre">
+            <div id="ParteReciclable">
+                <div class="row justify-content-center mt-2">
+                    <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                        <input type="text" name="cardNum" value="" id="cardNum" class="form-control"
+                            style="text-align: center" placeholder="Tarjeta Empleado" autofocus="true" required="true">
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-2">
+                    <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                        <button class="w-100 btn btn-lg btn-primary align-middle" style="background:#515151;"
+                            id="BotonValidar">
+                            <span id="botonFormValidar" class="touchnum" style=" color:white;">Validar</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-2">
+                    <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 mt-2">
+                        <div class="row">
+                            <div class="col-4">
+                                <button id="botonNum7" tecla="7" type="button" class="btn btn-outline-dark col-12 h-100"
+                                    onclick="BotonesAction(7)">7</button>
+                            </div>
+                            <div class="col-4">
+                                <button id="botonNum8" tecla="8" type="button" class="btn btn-outline-dark col-12 h-100"
+                                    onclick="BotonesAction(8)">8</button>
+                            </div>
+                            <div class="col-4">
+                                <button id="botonNum9" tecla="9" type="button" class="btn btn-outline-dark col-12 h-100"
+                                    onclick="BotonesAction(9)">9</button>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <button id="botonNum4" tecla="4" type="button" class="btn btn-outline-dark col-12 h-100"
+                                    onclick="BotonesAction(4)">4</button>
+                            </div>
+                            <div class="col-4">
+                                <button id="botonNum5" tecla="5" type="button" class="btn btn-outline-dark col-12 h-100"
+                                    onclick="BotonesAction(5)">5</button>
+                            </div>
+                            <div class="col-4">
+                                <button id="botonNum6" tecla="6" type="button" class="btn btn-outline-dark col-12 h-100"
+                                    onclick="BotonesAction(6)">6</button>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <button id="botonNum1" tecla="1" type="button" class="btn btn-outline-dark col-12 h-100"
+                                    onclick="BotonesAction(1)">1</button>
+                            </div>
+                            <div class="col-4">
+                                <button id="botonNum2" tecla="2" type="button" class="btn btn-outline-dark col-12 h-100"
+                                    onclick="BotonesAction(2)">2</button>
+                            </div>
+                            <div class="col-4">
+                                <button id="botonNum3" tecla="3" type="button" class="btn btn-outline-dark col-12 h-100"
+                                    onclick="BotonesAction(3)">3</button>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <button id="botonNum0" type="button" class="btn btn-outline-dark col-12 h-100"
+                                    onclick="BotonesAction(0)">0</button>
+                            </div>
+                            <div class="col-8">
+                                <button id="botonNumdel" type="button" class="btn btn-outline-dark col-12 h-100"
+                                    onclick="BotonesAction(10)">Borrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-2">
+                    <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                        <button class="w-100 btn btn-lg btn-primary align-middle" style="background:#515151;"
+                            id="botonLogin">
+                            <span id="botonLogin" class="touchnum" style=" color:white;">Login</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-2">
+            <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                <div class="text-center">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //focus en el input cardNum
+    $("#cardNum").focus();
+    function BotonesAction(id) {
+
+        switch (id) {
+            case 0:
+                var nbnum = 0;
+                var nbnumstr = String(nbnum);
+                var nbvalue = $("#cardNum").val();
+                var nbvaluestr = String(nbvalue);
+                var nbnewvalue = nbvaluestr.concat(nbnumstr);
+                $("#cardNum").val(nbnewvalue);
+                break;
+            case 1:
+                var nbnum = 1;
+                var nbnumstr = String(nbnum);
+                var nbvalue = $("#cardNum").val();
+                var nbvaluestr = String(nbvalue);
+                var nbnewvalue = nbvaluestr.concat(nbnumstr);
+                $("#cardNum").val(nbnewvalue);
+                break;
+            case 2:
+                var nbnum = 2;
+                var nbnumstr = String(nbnum);
+                var nbvalue = $("#cardNum").val();
+                var nbvaluestr = String(nbvalue);
+                var nbnewvalue = nbvaluestr.concat(nbnumstr);
+                $("#cardNum").val(nbnewvalue);
+                break;
+            case 3:
+                var nbnum = 3;
+                var nbnumstr = String(nbnum);
+                var nbvalue = $("#cardNum").val();
+                var nbvaluestr = String(nbvalue);
+                var nbnewvalue = nbvaluestr.concat(nbnumstr);
+                $("#cardNum").val(nbnewvalue);
+                break;
+            case 4:
+                var nbnum = 4;
+                var nbnumstr = String(nbnum);
+                var nbvalue = $("#cardNum").val();
+                var nbvaluestr = String(nbvalue);
+                var nbnewvalue = nbvaluestr.concat(nbnumstr);
+                $("#cardNum").val(nbnewvalue);
+                break;
+            case 5:
+                var nbnum = 5;
+                var nbnumstr = String(nbnum);
+                var nbvalue = $("#cardNum").val();
+                var nbvaluestr = String(nbvalue);
+                var nbnewvalue = nbvaluestr.concat(nbnumstr);
+                $("#cardNum").val(nbnewvalue);
+                break;
+            case 6:
+                var nbnum = 6;
+                var nbnumstr = String(nbnum);
+                var nbvalue = $("#cardNum").val();
+                var nbvaluestr = String(nbvalue);
+                var nbnewvalue = nbvaluestr.concat(nbnumstr);
+                $("#cardNum").val(nbnewvalue);
+                break;
+            case 7:
+                var nbnum = 7;
+                var nbnumstr = String(nbnum);
+                var nbvalue = $("#cardNum").val();
+                var nbvaluestr = String(nbvalue);
+                var nbnewvalue = nbvaluestr.concat(nbnumstr);
+                $("#cardNum").val(nbnewvalue);
+                break;
+            case 8:
+                var nbnum = 8;
+                var nbnumstr = String(nbnum);
+                var nbvalue = $("#cardNum").val();
+                var nbvaluestr = String(nbvalue);
+                var nbnewvalue = nbvaluestr.concat(nbnumstr);
+                $("#cardNum").val(nbnewvalue);
+                break;
+            case 9:
+                var nbnum = 9;
+                var nbnumstr = String(nbnum);
+                var nbvalue = $("#cardNum").val();
+                var nbvaluestr = String(nbvalue);
+                var nbnewvalue = nbvaluestr.concat(nbnumstr);
+                $("#cardNum").val(nbnewvalue);
+                break;
+            case 10:
+                var nbnum = $(this).attr("tecla");
+                var nbnumstr = String(nbnum);
+                var nbvalue = $("#cardNum").val();
+                var nblen = nbvalue.length - 1;
+                var nbnewvalue = nbvalue.substring(0, nblen);
+                $("#cardNum").val(nbnewvalue);
+                break;
+            default:
+            // nada
+        }
+    }
+
+    //si pulsamos enter en el cardNum se ejecuta el boton de validar
+    $("#cardNum").keypress(function (e) {
+        if (e.which == 13) {
+            $("#BotonValidar").click();
+        }
+    });
+
+    $('#BotonValidar').click(function () {
+        var cardNum = $("#cardNum").val();
+
+        //ENVIAR DATO POR AJAX
+        $.ajax({
+            url: "/RegistroBasico/ultimaAccion",
+            type: "POST",
+            data: {
+                cardNum: cardNum
+            },
+            success: function (data) {
+                var cardNum = data.cardNum;
+                var accion = data.accion;
+                var apellido = data.apellido;
+                var nombre = data.nombre;
+                if (accion == "E") {
+                    var botonSalida = `
+                    <div class="form-group">
+                        <h2>`+nombre+` `+apellido+`</h2>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                            <button class="w-100 btn btn-lg btn-primary" id="botonSalida" attr_Cardnum="`+cardNum+`" attr_Accion="S" onclick="nuevoRegistro(this)">Salida</button>
+                        </div>
+                    </div>`;
+                    $('#ParteReciclable').html(botonSalida);
+                } else if (accion == "S") {
+                    var botonEntrada = `
+                    <div class="form-group">
+                        <h2>`+nombre+` `+apellido+`</h2>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                            <button class="w-100 btn btn-lg btn-primary" id="botonEntrada" attr_Cardnum="`+cardNum+`" attr_Accion="E" onclick="nuevoRegistro(this)">Entrar</button>
+                        </div>
+                    </div>`;
+                    $('#ParteReciclable').html(botonEntrada);
+                } else {
+                    $("#cardNum").val("");
+                    $("#cardNum").attr("placeholder", nombre);
+                }
+            },
+            error: function (data) {
+                $("#cardNum").val("");
+                $("#cardNum").attr("placeholder", "Error");
+            }
+        });
+    });
+
+    function nuevoRegistro(obj){
+        var cardNum = $(obj).attr("attr_Cardnum");
+        var accion = $(obj).attr("attr_Accion");
+        var fecha = new Date();
+        var fechaString = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+        var horaString = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+
+        $.ajax({
+            url: "/RegistroBasico/Registrar",
+            type: "POST",
+            data: {
+                cardNum: cardNum,
+                fecha: fechaString,
+                hora: horaString,
+                accion: accion
+            },
+            success: function (data) {
+                if(data === 'OK'){
+                    //recargar la pagina
+                    location.reload();
+                }else {
+                    alert("Error");
+                }
+            }
+        });
+    }
+
+    $('#botonLogin').click(function () {
+        //ir a la pagina de login
+        window.location.href = "/login";
+    });
+
+    $(document).ready(function () {
+    });
+</script>
+
+{% endblock %}

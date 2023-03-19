@@ -1,0 +1,360 @@
+{% extends './base.html' %}
+{% block titulo %}Pagina Principal{% endblock %}
+
+{% block body %}
+{% include './nav.html' %}
+<div class="container">
+    <div id="ParteReciclablePadre">
+        <div id="ParteReciclable">
+            {% if admin == 'S' %}
+            <div class="row mt-2">
+                <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="configuracion()">
+                    <div class="row mt-2">
+                        <div class="col-sm">Configuración de la Aplicación</div>
+                    </div>
+                </button>
+            </div>
+            <div class="row mt-2">
+                <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="verEmpleados()">
+                    <div class="row mt-2">
+                        <div class="col-sm">Ver Empleados</div>
+                    </div>
+                </button>
+            </div>
+            <div class="row mt-2">
+                <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="proyectos()">
+                    <div class="row mt-2">
+                        <div class="col-sm">Proyectos</div>
+                    </div>
+                </button>
+            </div>
+            <div class="row mt-2">
+                <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="asignarEmpleadoTarea()">
+                    <div class="row mt-2">
+                        <div class="col-sm">Asignar Tarea a Empleado</div>
+                    </div>
+                </button>
+            </div>
+            {% endif %}
+            <div class="row mt-2">
+                <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="changePassword()">
+                    <div class="row mt-2">
+                        <div class="col-sm">Cambiar Contraseña</div>
+                    </div>
+                </button>
+            </div>
+            <div class="row mt-2">
+                <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="verRegistros()">
+                    <div class="row mt-2">
+                        <div class="col-sm">Ver Registros Realizados</div>
+                    </div>
+                </button>
+            </div>
+            <div class="row mt-2">
+                <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="verRegistrosTareas()">
+                    <div class="row mt-2">
+                        <div class="col-sm">Ver Registros Realizados por Tarea</div>
+                    </div>
+                </button>
+            </div>
+            <div class="row mt-2">
+                <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="verLogs()">
+                    <div class="row mt-2">
+                        <div class="col-sm">Ver lista de Logs</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // $("#llamarAjax").click(function(){
+    //     $.ajax({
+    //         url: "/ajax",
+    //         success: function(result){
+    //             $("#ajaxResponse").html(result);
+    //         }
+    //     });
+    // });
+    function configuracion() {
+        window.location.href = "/Configuracion";
+    }
+
+    function changePassword() {
+        $.ajax({
+            url: "/Herramientas/CambiarContrasena",
+            success: function (result) {
+                $("#ParteReciclable").html(result);
+            }
+        });
+    }
+
+    function verEmpleados() {
+        $.ajax({
+            url: "/Herramientas/VerEmpleados",
+            success: function (result) {
+                $("#ParteReciclable").html(result);
+            }
+        });
+    }
+
+    function proyectos() {
+        $.ajax({
+            url: "/Herramientas/Proyectos",
+            success: function (result) {
+                $("#ParteReciclable").html(result.tablaHtml);
+                var table = $('#DataTableMostrar').DataTable({
+                    "language": {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": " _MENU_ ",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": '<span class="material-symbols-outlined">',
+                            "sLast": '<span class="material-symbols-outlined">',
+                            "sNext": '<span class="material-symbols-outlined">',
+                            "sPrevious": '<span class="material-symbols-outlined">'
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        },
+                        "search": "_INPUT_",
+                        "searchPlaceholder": ""
+                    },
+                    "data": result.jsonProyectos,
+                    "columns": [
+                        { "data": "id" },
+                        { "data": "nombre" },
+                        { "data": "cliente" },
+                        {
+                            data: null,
+                            render: function (data, type, row) {
+                                return '<button class="btn btn-primary" type="button" attrId="'+ data.id +'" onclick="verTareas(this)">Ver</button>';
+                            }
+                        }
+                    ]
+                });
+            }
+        });
+    }
+
+    function verTareas(obj) {
+        //sacar el id del proyecto que esta en el atributo attrId
+        var id = $(obj).attr("attrId");
+        $.ajax({
+            url: "/Herramientas/verTareas",
+            method: "POST",
+            data: {
+                idProyecto: id
+            },
+            success: function (result) {
+                $("#ParteReciclable").html(result.tablaHtml);
+                var table = $('#DataTableMostrar').DataTable({
+                    "language": {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": " _MENU_ ",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": '<span class="material-symbols-outlined">',
+                            "sLast": '<span class="material-symbols-outlined">',
+                            "sNext": '<span class="material-symbols-outlined">',
+                            "sPrevious": '<span class="material-symbols-outlined">'
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        },
+                        "search": "_INPUT_",
+                        "searchPlaceholder": ""
+                    },
+                    "data": result.jsonTareas,
+                    "columns": [
+                        { "data": "id" },
+                        { "data": "nombre" }
+                    ]
+                });
+            }
+        });
+    }
+
+    function crearProyecto() {
+        $.ajax({
+            url: "/Herramientas/CrearProyecto",
+            success: function (result) {
+                $("#ParteReciclable").html(result);
+            }
+        });
+    }
+
+    function crearProyectoBD() {
+        var nombreProyecto = document.getElementById('nombreProyecto').value;
+        var cliente = document.getElementById('cliente').value;
+        var idcliente = document.getElementById('idcliente').value;
+        var idProyecto = document.getElementById('idProyecto').value;
+        $.ajax({
+            url: '/CrearProyecto',
+            type: 'POST',
+            data: 'nombreProyecto=' + nombreProyecto + '&cliente=' + cliente + '&idcliente=' + idcliente + '&idProyecto=' + idProyecto,
+            success: function (data) {
+                if (data == 'OK') {
+                    //recargar la pagina
+                    proyectos();
+                } else {
+                    alert('Error al crear el proyecto');
+                }
+            }
+        });
+    }
+
+    function crearTarea(obj) {
+        //sacar datos del atributo attr_proyecto
+        var idProyecto = obj.getAttribute('attr_proyecto');
+        $.ajax({
+            url: "/Herramientas/CrearTarea",
+            method: "POST",
+            data: {
+                idProyecto: idProyecto
+            },
+            success: function (result) {
+                $("#ParteReciclable").html(result);
+            }
+        });
+    }
+
+    function crearTareaDB() {
+        var nombreTarea = document.getElementById('nombreTarea').value;
+        var idProyecto = document.getElementById('idProyecto').value;
+        var idTarea = document.getElementById('idTarea').value;
+        $.ajax({
+            url: '/CrearTarea',
+            type: 'POST',
+            data: 'nombreTarea=' + nombreTarea + '&idProyecto=' + idProyecto + '&idTarea=' + idTarea,
+            success: function (data) {
+                if (data == 'OK') {
+                    //recargar la pagina
+                    proyectos();
+                } else {
+                    alert(data);
+                }
+            }
+        });
+    }
+
+    function asignarEmpleadoTarea() {
+        $.ajax({
+            url: "/Herramientas/AsignarEmpleadoTarea",
+            method: "POST",
+            data: {
+            },
+            success: function (result) {
+                $("#ParteReciclable").html(result);
+            }
+        });
+    }
+
+    function asignarEmpleadoTareaDB() {
+        var idEmpleado = document.getElementById('idEmpleado').value;
+        var idTarea = document.getElementById('idTarea').value;
+        //coger el atributo attrproyecto de la opcion seleccionada idTarea
+        var idProyecto = document.getElementById('idTarea').options[document.getElementById('idTarea').selectedIndex].getAttribute('attrproyecto');
+        console.log(idProyecto);
+        $.ajax({
+            url: '/Herramientas/AsignarEmpleadoTareasDB',
+            type: 'POST',
+            data: 'idEmpleado=' + idEmpleado + '&idTarea=' + idTarea + '&idProyecto=' + idProyecto,
+            success: function (data) {
+                if (data == 'OK') {
+                    //recargar la pagina
+                    asignarEmpleadoTarea();
+                } else {
+                    alert(data);
+                }
+            }
+        });
+
+    }
+
+    function asignacionesActuales() {
+        $.ajax({
+            url: "/Herramientas/AsignacionesActuales",
+            method: "POST",
+            data: {
+            },
+            success: function (result) {
+                $("#ParteReciclable").html(result);
+            }
+        });
+    }
+
+    function eliminarAsignacion(obj) {
+        var empleado = obj.getAttribute("attrEmpleado");
+        var tarea = obj.getAttribute("attrTarea");
+        var proyecto = obj.getAttribute("attrProyecto");
+        $.ajax({
+            url: '/Herramientas/eliminarAsignacion',
+            type: 'POST',
+            data: 'empleado=' + empleado + '&tarea=' + tarea + '&proyecto=' + proyecto,
+            success: function (data) {
+                if (data == "OK") {
+                    //recargar la pagina
+                    asignacionesActuales();
+                }
+                else {
+                    alert(data);
+                }
+            }
+        });
+    }
+
+    function verRegistros() {
+        $.ajax({
+            url: "/Herramientas/VerRegistros",
+            method: "POST",
+            data: {
+            },
+            success: function (result) {
+                $("#ParteReciclable").html(result);
+            }
+        });
+    }
+
+    function verRegistrosTareas(){
+        $.ajax({
+            url: "/Herramientas/VerRegistrosTareas",
+            method: "POST",
+            data: {
+            },
+            success: function (result) {
+                $("#ParteReciclable").html(result);
+            }
+        });
+    }
+
+    function verLogs() {
+        $.ajax({
+            url: "/Herramientas/VerLogs",
+            method: "POST",
+            data: {
+            },
+            success: function (result) {
+                $("#ParteReciclable").html(result);
+            }
+        });
+    }
+
+</script>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends './base.html' %}
+{% block titulo %}Pagina Principal{% endblock %}
+
+{% block body %}
+    {% include './nav.html' %}
+<div class="container">
+    <form>
+        <div class="form-group">
+          <label for="empresa">Nombre Empresa</label>
+          <input type="text" class="form-control" id="empresa" placeholder="" value="{{ config.Empresa }}">
+        </div>
+        <div class="form-group">
+            <label for="ImgEmpresaBase64">Imagen Empresa en Base64</label>
+            <input type="text" class="form-control" id="ImgEmpresaBase64" placeholder="" value="{{ config.ImgEmpresaBase64 }}">
+        </div>
+        <div class="form-group">
+            <label for="ImgEmpresaTipo">Imagen Tipo Empresa</label>
+            <input type="text" class="form-control" id="ImgEmpresaTipo" placeholder="" value="{{ config.ImgEmpresaTipo }}">
+        </div>
+        <div class="form-group">
+          <label for="TipoConexionBC">Tipo de Conexión BC</label>
+          <select  class="form-control" id="TipoConexionBC">
+            <option>Ninguna</option>
+            <option>Soap</option>
+            <option>Odata</option>
+          </select>
+        </div>
+        <div class="form-group">
+            <label for="urlBC">Url BC</label>
+            <input type="text" class="form-control" id="urlBC" placeholder="" value="{{ config.urlBC }}">
+        </div>
+        <div class="form-group">
+            <label for="usuarioSOAP">Usuario SOAP</label>
+            <input type="text" class="form-control" id="usuarioSOAP" placeholder="" value="{{ config.usuarioSOAP }}">
+        </div>
+        <div class="form-group">
+            <label for="passwordSOAP">Contraseña SOAP</label>
+            <input type="text" class="form-control" id="passwordSOAP" placeholder="" value="{{ config.passwordSOAP }}">
+        </div>
+        <div class="form-group">
+            <label for="tenantBC">Tenant BC</label>
+            <input type="text" class="form-control" id="tenantBC" placeholder="" value="{{ config.tenantBC }}">
+        </div>
+        <div class="form-group">
+            <label for="idClienteBC">Id Cliente BC</label>
+            <input type="text" class="form-control" id="idClienteBC" placeholder="" value="{{ config.idClienteBC }}">
+        </div>
+        <div class="form-group">
+            <label for="secretClienteBC">Id secreto BC</label>
+            <input type="text" class="form-control" id="secretClienteBC" placeholder="" value="{{ config.secretClienteBC }}">
+        </div>
+        <div class="form-group">
+            <label for="empresaBC">Empresa BC</label>
+            <input type="text" class="form-control" id="empresaBC" placeholder="" value="{{ config.empresaBC }}">
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="moduloBotTelegram">
+            <label class="form-check-label" for="moduloBotTelegram">Modulo Telegram</label>
+        </div>
+        <div class="form-group">
+            <label for="tokenBotTelegram">Token Telegram</label>
+            <input type="text" class="form-control" id="tokenBotTelegram" placeholder="" value="{{ config.tokenBotTelegram }}">
+        </div>
+        <div class="col-md-3 text-end">
+            <button type="button" class="btn btn-primary" id="actualizarDatos">Actualizar Datos</button>
+        </div>        
+      </form>
+</div>
+    <script>
+        $("#actualizarDatos").click(function(){
+            var empresa = $("#empresa").val();
+            var ImgEmpresaBase64 = $("#ImgEmpresaBase64").val();
+            var ImgEmpresaTipo = $("#ImgEmpresaTipo").val();
+            var TipoConexionBC = $("#TipoConexionBC").val();
+            var urlBC = $("#urlBC").val();
+            var usuarioSOAP = $("#usuarioSOAP").val();
+            var passwordSOAP = $("#passwordSOAP").val();
+            var tenantBC = $("#tenantBC").val();
+            var idClienteBC = $("#idClienteBC").val();
+            var empresaBC = $("#empresaBC").val();
+            var moduloBotTelegram = $("#moduloBotTelegram").val();
+            var tokenBotTelegram = $("#tokenBotTelegram").val();
+            var secretClienteBC = $("#secretClienteBC").val();
+
+            //crear json con los datos:
+            var datos = {
+                "empresa": empresa,
+                "ImgEmpresaBase64": ImgEmpresaBase64,
+                "ImgEmpresaTipo": ImgEmpresaTipo,
+                "TipoConexionBC": TipoConexionBC,
+                "urlBC": urlBC,
+                "usuarioSOAP": usuarioSOAP,
+                "passwordSOAP": passwordSOAP,
+                "tenantBC": tenantBC,
+                "idClienteBC": idClienteBC,
+                "empresaBC": empresaBC,
+                "moduloBotTelegram": moduloBotTelegram,
+                "tokenBotTelegram": tokenBotTelegram,
+                "secretClienteBC": secretClienteBC,
+            };
+
+            $.ajax({
+                url: "/actualizarDatos",
+                type: "POST",
+                data: datos,
+                contentType: "application/json",
+                success: function(result){
+                    if (result === "OK"){
+                        //alert("Datos actualizados correctamente");
+                    }else{
+                        alert("Error al actualizar los datos");
+                    }
+                }
+            });
+
+            // $.ajax({
+            //     url: "/ajax",
+            //     success: function(result){
+            //         $("#ajaxResponse").html(result);
+            //     }
+            // });
+        });
+    </script>
+{% endblock %}
+

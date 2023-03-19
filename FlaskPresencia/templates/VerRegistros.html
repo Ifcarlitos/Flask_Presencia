@@ -1,0 +1,32 @@
+<div class="table-responsive">
+<table id="data" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Empleado</th>
+        <th>Tipo</th>
+        <th>Fecha</th>
+        <th>Hora</th>
+        {% if admin  %}
+          <th>Sincro</th>
+          <th></th>
+          <th></th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for registro in registros %}
+        <tr>
+          <td>{{ registro.id_empleado }}</td>
+          <td>{{ registro.tipo }}</td>
+          <td>{{ registro.fecha }}</td>
+          <td>{{ registro.hora }}</td>
+          {% if admin  %}
+            <td>{{ registro.sincronizado }}</td>
+            <td><a href="{{ url_for('VerRegistro_eliminar_registro', id=registro.id) }}" class="btn btn-danger">Eliminar</a></td>
+            <td><a href="{{ url_for('VerRegistro_editar_registro', id=registro.id) }}" class="btn btn-warning">Editar</a></td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

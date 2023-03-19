@@ -1,0 +1,154 @@
+{% extends './base.html' %}
+{% block titulo %}Pagina Principal{% endblock %}
+
+{% block body %}
+{% include './nav.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <h4 class="text-center">Pagina Principal, puede definir el tiempo por tarea</h4>
+        </div>
+    </div>
+    </br>
+    <div class="row">
+        <div class="col-sm" id="botonAccion">
+            {% if accion=='E' %}
+                <div class="row justify-content-center">
+                    <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                        <button class="w-100 btn btn-lg btn-primary" id="botonSalida" attr_Cardnum="{{idEmpleado}}" attr_Accion="S" onclick="nuevoRegistro(this)">Salida</button>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row justify-content-center">
+                    <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                        <button class="w-100 btn btn-lg btn-primary" id="botonEntrada" attr_Cardnum="{{idEmpleado}}" attr_Accion="E" onclick="nuevoRegistro(this)">Entrar</button>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    </br>
+    <div id="tareas">
+        {% for tarea in tareas %}
+        <!-- <div class="row"> -->
+            <div class="form-group">
+            <label for="exampleFormControlInput1">{{ tarea.nombre_proyecto }} ({{ tarea.id_proyecto }}) - {{ tarea.nombre_tarea }} ({{ tarea.id_tarea }})</label>
+            <input type="number" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
+            attrProyecto="{{ tarea.id_proyecto }}" attrTarea="{{ tarea.id_tarea }}"
+            attrEmpleado="{{ tarea.id_empleado }}">
+            </div>
+        <!-- </div> -->
+        {% endfor %}
+    </div>
+    {% if mostrar %}
+    <div class="row">
+        <!-- Button trigger modal -->
+        <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="enviarRegistros()">
+            <div class="row mt-2">
+                <div class="col-sm">Enviar</div>
+            </div>
+        </button>
+    </div>
+    {% endif %}
+    <script>
+        function enviarRegistros() {
+            var registros = document.getElementsByClassName("form-control");
+            var datos = [];
+            for (var i = 0; i < registros.length; i++) {
+                //coger atributos
+                var proyecto = registros[i].getAttribute("attrProyecto");
+                var tarea = registros[i].getAttribute("attrTarea");
+                var empleado = registros[i].getAttribute("attrEmpleado");
+                //coger valor
+                var valor = registros[i].value;
+                //guardar en json
+                var json = {
+                    "proyecto": proyecto,
+                    "tarea": tarea,
+                    "empleado": empleado,
+                    "valor": valor
+                }
+                console.log(json);
+                //si algun valor esta vacio
+                if (valor == "") {
+                    alert("No puede haber campos vacios");
+                    return;
+                }
+                if(empleado == null){
+                    alert("No puede haber campos vacios");
+                    return;
+                }
+                if(proyecto == null){
+                    alert("No puede haber campos vacios");
+                    return;
+                }
+                if(tarea == null){
+                    alert("No puede haber campos vacios");
+                    return;
+                }
+                //enviar datos
+                $.ajax({
+                    url: '/enviarRegistros',
+                    type: 'POST',
+                    data: '&idProyecto=' + proyecto + '&idTarea=' + tarea + '&idEmpleado=' + empleado + '&valor=' + valor,
+                    success: function (data) {
+                        //ir a la url /inicio
+                        //window.location.href = "/inicio";
+                        if (data == "ok") {
+                            window.location.href = "/inicio";
+                        } else {
+                            alert(data);
+                        }
+                    },
+                    error: function (data) {
+                        alert("Error al enviar los datos, contacte con el administrador");
+                    }
+                });
+            }
+
+        }
+        function nuevoRegistro(obj){
+        var cardNum = $(obj).attr("attr_Cardnum");
+        var accion = $(obj).attr("attr_Accion");
+        var fecha = new Date();
+        var fechaString = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+        var horaString = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+
+        $.ajax({
+            url: "/RegistroBasico/Registrar",
+            type: "POST",
+            data: {
+                cardNum: cardNum,
+                fecha: fechaString,
+                hora: horaString,
+                accion: accion
+            },
+            success: function (data) {
+                botonSalida = `
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                            <button class="w-100 btn btn-lg btn-primary" id="botonSalida" attr_Cardnum="{{idEmpleado}}" attr_Accion="S" onclick="nuevoRegistro(this)">Salida</button>
+                        </div>
+                    </div>`;
+                botonEntrada = `
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                            <button class="w-100 btn btn-lg btn-primary" id="botonEntrada" attr_Cardnum="{{idEmpleado}}" attr_Accion="E" onclick="nuevoRegistro(this)">Entrar</button>
+                        </div>
+                    </div>`;
+                if(data === 'OK'){
+                    if(accion === 'E'){
+                        $("#botonAccion").html(botonSalida);
+                    }else{
+                        $("#botonAccion").html(botonEntrada);
+                    }
+                    
+                }else {
+                    alert("Error");
+                }
+            }
+        });
+    }
+
+    </script>
+    {% endblock %}

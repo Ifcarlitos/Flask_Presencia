@@ -1,0 +1,35 @@
+{% extends './base.html' %}
+
+{% block titulo %}Login{% endblock %}
+
+{% block CSSPersonalizado %}
+<link rel="stylesheet" href="/static/css/signin.css" crossorigin="anonymous">
+{% endblock %}
+
+{% block body %}
+
+<form class="form-signin" method="POST" action="">
+    <img class="mb-4" src="/static/img/logo-salle.png" alt="" width="200" height="100">
+    <br>
+    {{ form.hidden_tag() }}
+    {{ form.username }}
+    {{ form.password }}
+    <br>
+    <div class="checkbox mb-3">
+        <label>
+            {{ form.submit }}
+        </label>
+    </div>
+    <!-- <br>
+    <a href="{{ url_for('register') }}">No tienes cuenta?, registrate!!</a> -->
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#username').addClass('form-control');
+        $('#password').addClass('form-control');
+        $('#submit').addClass('btn btn-lg btn-primary btn-block');
+    });
+</script>
+
+{% endblock %}

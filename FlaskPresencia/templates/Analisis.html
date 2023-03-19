@@ -1,0 +1,46 @@
+{% extends './base.html' %}
+{% block titulo %}Pagina Principal{% endblock %}
+
+{% block body %}
+{% include './nav.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <h4 class="text-center">Sistema de Análisis</h4>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="exportarExcelRegistros()">
+            <div class="row mt-2">
+                <div class="col-sm">Exportar Registros a Excel</div>
+            </div>
+        </button>
+    </div>
+    <div class="row mt-2">
+        <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="exportarExcelRegistrosTarea()">
+            <div class="row mt-2">
+                <div class="col-sm">Exportar Registro por Tarea a Excel</div>
+            </div>
+        </button>
+    </div>
+    <div class="row mt-2">
+        <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="InformePdfRegistros()">
+            <div class="row mt-2">
+                <div class="col-sm">Informe diario en pdf</div>
+            </div>
+        </button>
+    </div>
+</div>
+    <script>
+        function exportarExcelRegistros(){
+            window.location.href = "/exportarExcelRegistros";
+        }
+        function exportarExcelRegistrosTarea(){
+            window.location.href = "/exportarExcelRegistrosTarea";
+        }
+        function InformePdfRegistros(){
+            alert("Informe diario en pdf no disponible");
+            // window.location.href = "/InformePdfRegistros";
+        }
+    </script>
+    {% endblock %}

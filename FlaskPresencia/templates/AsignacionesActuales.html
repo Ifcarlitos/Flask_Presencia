@@ -1,0 +1,27 @@
+<table id="data" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Empleado</th>
+        <th>Tarea</th>
+        <th>Proyecto</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for asignacion in asignaciones %}
+        <tr>
+          <td>{{ asignacion.id_empleado }}</td>
+          <td>{{ asignacion.nombre_tarea }}</td>
+          <td>{{ asignacion.nombre_proyecto }}</td>
+          <td>
+            <button class="col-sm btn btn-primary margin-Botones" type="button" 
+            attrEmpleado="{{ asignacion.id_empleado }}" attrTarea="{{ asignacion.id_tarea }}" attrProyecto="{{ asignacion.id_proyecto }}" onclick="eliminarAsignacion(this)">
+              <div class="row mt-2">
+                  <div class="col-sm">Eliminar</div>
+              </div>
+          </button>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
