@@ -631,6 +631,26 @@ def VerLogs():
     '''
     return html
 
+#/Herramientas/CIM
+@app.route('/Herramientas/CIM', methods=['GET', 'POST'])
+@login_required
+def CIM():
+    fechaHoy = time.strftime("%Y-%m-%d")
+
+    fechaHoyCon0 = str(fechaHoy)
+    #si el mes es menor a 10, eliminar el 0
+    if fechaHoy[5] == '0':
+        fechaHoy = fechaHoy[:5]+fechaHoy[6:]
+    #pasar fecha a str
+    fechaHoySin0 = str(fechaHoy)
+    
+    #buscar registros de la fecha de hoy
+    registrosTareas = RegistroMarcajePorTarea.query.filter_by(fecha=fechaHoyCon0).all()
+    registrosEntradas = RegistroMarcaje.query.filter_by(fecha=fechaHoy, tipo='E').all()
+    registrosSalidas = RegistroMarcaje.query.filter_by(fecha=fechaHoy, tipo='S').all()
+    #enviar a html
+    return render_template('CIM.html', registrosTareas=registrosTareas, registrosEntradas=registrosEntradas, registrosSalidas=registrosSalidas)
+
 @app.route('/CrearTarea', methods=['GET', 'POST'])
 @login_required
 def CrearTarea():

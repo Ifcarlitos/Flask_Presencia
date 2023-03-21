@@ -1,0 +1,94 @@
+<!-- Pagina con dos botones, ver registro de entrada y salida o de horas-->
+<!-- Path: templates\Registro.html -->
+
+{% extends './base.html' %}
+{% block titulo %}Pagina Principal{% endblock %}
+
+{% block body %}
+{% include './nav.html' %}
+<div class="container">
+    <div id="ParteReciclablePadre">
+        <div id="ParteReciclable">
+            <div class="row mt-2">
+                <div class="col">
+                    <h4>Empleados Con Entrada: </h4>
+                </div>
+                <div class="col">
+                    <h4>Empleados Con Salida:</h4>
+                </div>
+            </div>
+            <br>
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="table-responsive-xl">
+                        <table id="data" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Empleado</th>
+                                    <th>Hora</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for registroEntrada in registrosEntradas %}
+                                <tr>
+                                    <td>{{ registroEntrada.id_empleado }}</td>
+                                    <td>{{ registroEntrada.hora }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="table-responsive-xl">
+                        <table id="data" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Empleado</th>
+                                    <th>Hora</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for registroSalidas in registrosSalidas %}
+                                <tr>
+                                    <td>{{ registroSalidas.id_empleado }}</td>
+                                    <td>{{ registroSalidas.hora }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <h4>Registros Por Tarea y Empleado</h4>
+            </div>
+            <div class="row mt-2">
+                <div class="table-responsive">
+                    <table id="data" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Empleado</th>
+                                <th>Proyecto</th>
+                                <th>Tarea</th>
+                                <th>Tiempo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for registro in registrosTareas %}
+                            <tr>
+                                <td>{{ registro.id_empleado }}</td>
+                                <td>{{ registro.proyecto }}</td>
+                                <td>{{ registro.tarea }}</td>
+                                <td>{{ registro.tiempo }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
+{% endblock %}

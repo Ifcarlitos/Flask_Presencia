@@ -35,6 +35,20 @@
                     </div>
                 </button>
             </div>
+            <div class="row mt-2">
+                <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="verLogs()">
+                    <div class="row mt-2">
+                        <div class="col-sm">Ver lista de Logs</div>
+                    </div>
+                </button>
+            </div>
+            <div class="row mt-2">
+                <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="CIM()">
+                    <div class="row mt-2">
+                        <div class="col-sm">Cuadro integral de mando</div>
+                    </div>
+                </button>
+            </div>
             {% endif %}
             <div class="row mt-2">
                 <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="changePassword()">
@@ -54,13 +68,6 @@
                 <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="verRegistrosTareas()">
                     <div class="row mt-2">
                         <div class="col-sm">Ver Registros Realizados por Tarea</div>
-                    </div>
-                </button>
-            </div>
-            <div class="row mt-2">
-                <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="verLogs()">
-                    <div class="row mt-2">
-                        <div class="col-sm">Ver lista de Logs</div>
                     </div>
                 </button>
             </div>
@@ -354,6 +361,11 @@
                 $("#ParteReciclable").html(result);
             }
         });
+    }
+
+    function CIM(){
+       //ir a /Herramientas/CIM
+       window.location.href = "/Herramientas/CIM";
     }
 
 </script>

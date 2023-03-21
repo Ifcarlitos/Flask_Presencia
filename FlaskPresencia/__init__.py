@@ -33,3 +33,5 @@ if Config.query.filter_by(id=0).first() is None:
 import FlaskPresencia.form
 
 import FlaskPresencia.rutas
+
+import FlaskPresencia.rutasAPI
