@@ -1,3 +1,6 @@
+<p>Buscardor En la tabla</p>
+<input class="form-control" id="Buscador" type="text" placeholder="Search..">
+<br>
 <div class="table-responsive">
 <table id="data" class="table table-striped">
     <thead>
@@ -13,8 +16,43 @@
           <th></th>
         {% endif %}
       </tr>
+      {% if herramientas %}
+      <tr>
+        <th>
+          <select id="FiltroEmpleado" class="form-select">
+            <option value="todo" selected>Filtro Empleado</option>
+            {% for empleado in empleados %}
+              <option value="{{ empleado.id_Empleado }}">{{ empleado.nombre }}</option>
+            {% endfor %}
+          </select>
+        </th>
+        <th>
+          <select id="FiltroProy" class="form-select" >
+            <option value="todo" selected>Filtro Proyecto</option>
+            {% for proyecto in proyectos %}
+              <option value="{{ proyecto.id_proyecto }}">{{ proyecto.nombre_proyecto }}</option>
+            {% endfor %}
+          </select>
+        </th>
+        <th>
+          <select id="FiltroTarea" class="form-select">
+            <option value="todo" selected>Filtro Tarea</option>
+            {% for tarea in tareas %}
+              <option value="{{ tarea.id_tarea }}">{{ tarea.id_tarea }}</option>
+            {% endfor %}
+          </select>
+        </th>
+        <th></th>
+        <th></th>
+        {% if admin  %}
+          <th></th>
+          <th></th>
+          <th></th>
+        {% endif %}
+      </tr>
+      {% endif %}
     </thead>
-    <tbody>
+    <tbody id="TablaFilter">
       {% for registro in registros %}
         <tr>
           <td>{{ registro.id_empleado }}</td>
@@ -32,3 +70,56 @@
     </tbody>
   </table>
 </div>
+<script>
+  $(document).ready(function(){
+    $("#Buscador").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#TablaFilter tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+
+    //filtro por empleado filtrar la primera columna
+    $("#FiltroEmpleado").on("change", function() {
+      var value = $(this).val();
+      if(value == "todo"){
+        value = "";
+      }
+      $("#TablaFilter tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      //poner filtro por proyecto y tarea en todos
+      $("#FiltroProy").val("todo");
+      $("#FiltroTarea").val("todo");
+    });
+
+    //filtro por proyecto filtrar la segunda columna
+    $("#FiltroProy").on("change", function() {
+      var value = $(this).val();
+      if(value == "todo"){
+        value = "";
+      }
+      $("#TablaFilter tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      //poner filtro por tarea y empleado en todos
+      $("#FiltroTarea").val("todo");
+      $("#FiltroEmpleado").val("todo");
+    });
+
+    //filtro por tarea filtrar la tercera columna
+    $("#FiltroTarea").on("change", function() {
+      var value = $(this).val();
+      if(value == "todo"){
+        value = "";
+      }
+      $("#TablaFilter tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      //poner filtro por proyecto y empleado en todos
+      $("#FiltroProy").val("todo");
+      $("#FiltroEmpleado").val("todo");
+    });
+
+  });
+  </script>

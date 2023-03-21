@@ -19,6 +19,7 @@ class RegistroMarcaje(db.Model):
     hora = db.Column(db.String(250), nullable = True)
     tipo = db.Column(db.String(250), nullable = False)
     sincronizado = db.Column(db.Boolean, nullable = True, default=False)
+    terminal = db.Column(db.String(250), nullable = True, default="Web")
 
 class RegistroMarcajePorTarea(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,6 +29,7 @@ class RegistroMarcajePorTarea(db.Model):
     proyecto = db.Column(db.String(250), nullable = True)
     tarea = db.Column(db.String(250), nullable = True)
     sincronizado = db.Column(db.Boolean, nullable = True, default=False)
+    terminal = db.Column(db.String(250), nullable = True, default="Web")
 
 class Config(db.Model):
     id = db.Column(db.Integer, primary_key=True)

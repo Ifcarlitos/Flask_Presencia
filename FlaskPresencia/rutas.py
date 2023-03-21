@@ -459,7 +459,10 @@ def verRegistros():
         admin = True
     else:  
         admin = False
-    return render_template('VerRegistros.html', registros=registros, admin=admin)
+
+    empleados = User.query.filter_by().all()
+    herramientas = True
+    return render_template('VerRegistros.html', registros=registros, admin=admin, herramientas=herramientas, empleados=empleados)
 
 @app.route('/Herramientas/AsignarEmpleadoTarea', methods=['GET', 'POST'])
 @login_required
@@ -613,7 +616,13 @@ def VerRegistrosTareas():
     admin = False
     if current_user.rol_admin == True:
         admin = True
-    return render_template('VerHorasRegistradas.html', registros=registros, admin=admin)
+    
+    empleados = User.query.filter_by().all()
+    proyectos = Proyecto.query.filter_by().all()
+    tareas = Tarea.query.filter_by().all()
+
+    herramientas = True
+    return render_template('VerHorasRegistradas.html', registros=registros, admin=admin, empleados=empleados, proyectos=proyectos, tareas=tareas, herramientas=herramientas)
 
 @app.route('/Herramientas/VerLogs', methods=['GET', 'POST'])
 @login_required
@@ -703,7 +712,9 @@ def verRegistrosFiltrados():
     admin = False
     if current_user.rol_admin == True:
         admin = True
-    return render_template('VerRegistros.html', registros=registros, admin=admin)
+    
+    herramientas = False
+    return render_template('VerRegistros.html', registros=registros, admin=admin, herramientas= herramientas)
 
 #ruta /verRegistros/eliminar_registro con parametro id
 @app.route('/verRegistros/eliminar_registro/<id>', methods=['GET', 'POST'])
@@ -751,7 +762,9 @@ def verHorasRegistradasFiltrados():
     admin = False
     if current_user.rol_admin == True:
         admin = True
-    return render_template('VerHorasRegistradas.html', registros=registros, admin=admin)
+    
+    herramientas = False
+    return render_template('VerHorasRegistradas.html', registros=registros, admin=admin, herramientas=herramientas)
 
 #ruta /verHorasRegistradas/eliminar_registro con parametro id
 @app.route('/verHorasRegistradas/eliminar_registro/<id>', methods=['GET', 'POST'])

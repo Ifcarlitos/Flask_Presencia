@@ -1,32 +1,100 @@
+<p>Buscardor En la tabla</p>
+<input class="form-control" id="Buscador" type="text" placeholder="Search..">
+<br>
 <div class="table-responsive-xl">
-  <table id="data" class="table">
+  <table id="data" class="table table-bordered table-striped">
     <thead>
       <tr>
         <th>Empleado</th>
         <th>Tipo</th>
         <th>Fecha</th>
         <th>Hora</th>
+        {% if admin %}
+        <th>Sincro</th>
+        <th></th>
+        <th></th>
+        {% endif %}
+      </tr>
+      {% if herramientas %}
+      <tr>
+        <th>
+          <select id="FiltroEmpleado" class="form-select">
+            <option value="todo" selected>Filtro Empleado</option>
+            {% for empleado in empleados %}
+              <option value="{{ empleado.id_Empleado }}">{{ empleado.nombre }}</option>
+            {% endfor %}
+          </select>
+        </th>
+        <th>
+          <select id="FiltroTipo" class="form-select" >
+            <option value="todo" selected>Filtro Proyecto</option>
+            <option value="E">Entrada</option>
+            <option value="S">Salida</option>
+          </select>
+        </th>
+        <th>
+        </th>
+        <th></th>
+        <th></th>
         {% if admin  %}
-          <th>Sincro</th>
+          <th></th>
           <th></th>
           <th></th>
         {% endif %}
       </tr>
+      {% endif %}
     </thead>
-    <tbody>
+    <tbody id="TablaFilter">
       {% for registro in registros %}
-        <tr>
-          <td>{{ registro.id_empleado }}</td>
-          <td>{{ registro.tipo }}</td>
-          <td>{{ registro.fecha }}</td>
-          <td>{{ registro.hora }}</td>
-          {% if admin  %}
-            <td>{{ registro.sincronizado }}</td>
-            <td><a href="{{ url_for('VerRegistro_eliminar_registro', id=registro.id) }}" class="btn btn-danger">Eliminar</a></td>
-            <td><a href="{{ url_for('VerRegistro_editar_registro', id=registro.id) }}" class="btn btn-warning">Editar</a></td>
-          {% endif %}
-        </tr>
+      <tr>
+        <td>{{ registro.id_empleado }}</td>
+        <td>{{ registro.tipo }}</td>
+        <td>{{ registro.fecha }}</td>
+        <td>{{ registro.hora }}</td>
+        {% if admin %}
+        <td>{{ registro.sincronizado }}</td>
+        <td><a href="{{ url_for('VerRegistro_eliminar_registro', id=registro.id) }}" class="btn btn-danger">Eliminar</a>
+        </td>
+        <td><a href="{{ url_for('VerRegistro_editar_registro', id=registro.id) }}" class="btn btn-warning">Editar</a>
+        </td>
+        {% endif %}
+      </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
+<script>
+  $(document).ready(function(){
+    $("#Buscador").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#TablaFilter tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+
+        //filtro por empleado filtrar la primera columna
+  $("#FiltroEmpleado").on("change", function() {
+      var value = $(this).val();
+      if(value == "todo"){
+        value = "";
+      }
+      $("#TablaFilter tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      //poner filtro por proyecto y tarea en todos
+      $("#FiltroTipo").val("todo");
+    });
+
+    //filtro por proyecto filtrar la segunda columna
+    $("#FiltroTipo").on("change", function() {
+      var value = $(this).val();
+      if(value == "todo"){
+        value = "";
+      }
+      $("#TablaFilter tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      $("#FiltroEmpleado").val("todo");
+    });
+  });
+  </script>
