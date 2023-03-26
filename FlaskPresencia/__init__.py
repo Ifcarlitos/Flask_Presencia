@@ -6,29 +6,32 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from FlaskPresencia.config import config
 
 app = Flask(__name__)
-app.config.from_object(config['development'])
+app.config.from_object(config['development2'])
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+app.app_context().push()
+
 import FlaskPresencia.models
 from FlaskPresencia.models import User, Config
 
-db.create_all()
+with app.app_context():
+    db.create_all()
 
-#crear usuer admin si no esta creado
-if User.query.filter_by(username='admin').first() is None:
-    has_password = Bcrypt().generate_password_hash('admin123456789').decode('utf-8')
-    admin = User(username='admin', password=has_password, nombre='admin', apellido='admin', id_Empleado='admin', rol_admin=True)
-    db.session.add(admin)
-    db.session.commit()
-#crear config si no esta creada
-if Config.query.filter_by(id=0).first() is None:
-    config = Config(id=0, Empresa='Empresa', ImgEmpresaBase64='', ImgEmpresaTipo='', TipoConexionBC='SOAP', urlBC='https://api.businesscentral.dynamics.com/v2.0/BC/api/v1.0/', usuarioSOAP='admin', passwordSOAP='admin', tenantBC='admin', idClienteBC='admin', secretClienteBC='admin', empresaBC='admin', moduloBotTelegram=False, tokenBotTelegram='')
-    db.session.add(config)
-    db.session.commit()
+    #crear usuer admin si no esta creado
+    if User.query.filter_by(username='admin').first() is None:
+        has_password = Bcrypt().generate_password_hash('admin123456789').decode('utf-8')
+        admin = User(username='admin', password=has_password, nombre='admin', apellido='admin', id_Empleado='admin', rol_admin=True)
+        db.session.add(admin)
+        db.session.commit()
+    #crear config si no esta creada
+    if Config.query.filter_by(id=0).first() is None:
+        config = Config(id=0, Empresa='Empresa', ImgEmpresaBase64='', ImgEmpresaTipo='', TipoConexionBC='SOAP', urlBC='https://api.businesscentral.dynamics.com/v2.0/BC/api/v1.0/', usuarioSOAP='admin', passwordSOAP='admin', tenantBC='admin', idClienteBC='admin', secretClienteBC='admin', empresaBC='admin', moduloBotTelegram=False, tokenBotTelegram='')
+        db.session.add(config)
+        db.session.commit()
 
 import FlaskPresencia.form
 

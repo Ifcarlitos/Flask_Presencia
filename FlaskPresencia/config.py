@@ -6,7 +6,7 @@ class Developement():
 
 class Developement2():
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///Database-Dev/database_prueba2.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///database_prueba2.db'
     SECRET_KEY = 'admin'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
