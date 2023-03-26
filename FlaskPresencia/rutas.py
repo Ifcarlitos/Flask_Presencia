@@ -6,6 +6,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import Length, ValidationError, InputRequired
 from flask_bcrypt import Bcrypt
+from suds.client import Client
 import json
 import time
 import pandas as pd
@@ -884,6 +885,11 @@ def Registrar():
                 tenant = '5f5f63d8-e0f2-4301-9e3e-8817644d3071'
                 empresa = '''CRONUS%20ES'''  
                 sincronizarMarcajeFiltradoOdata(tenant,idapp,valor,empresa, registroMarcajeEmpleado)
+            if configuracion.TipoConexionBC == 'SOAP':
+                url = configuracion.urlBC
+                username = configuracion.usuarioSOAP
+                password = configuracion.passwordSOAP
+                sincronizarMarcajeFiltradpSOAP(url,username,password,registroMarcajeEmpleado)
         return 'OK'
     
 @app.route('/SincroBC', methods=['GET', 'POST'])
@@ -1112,6 +1118,45 @@ def sincronizarMarcajesPorTareaOdata(tenant,idapp,valor,empresa):
             f = open("log.txt", "a")
             f.write("Error al sincronizar marcaje por tarea: " + str(registro.id))
             f.close()
+
+def sincronizarMarcajeFiltradpSOAP(url,username,password,marcaje):
+    try:
+        client = Client(url=url,username=username,password=password)
+        #creamos json de envio
+        empleado = marcaje.id_empleado
+        fecha = marcaje.fecha
+        #fecha en formato dd/mm/yyyy
+        fecha = fecha[8:10]+"/"+fecha[5:7]+"/"+fecha[0:4]
+        hora = marcaje.hora
+        tipo = marcaje.tipo
+        envioDatos = "{\"empleado\":\""+empleado+"\",\"fecha\":\""+fecha+"\",\"hora\":\""+hora+"\",\"tipo\":\""+tipo+"\"}"
+        respuesta = client.service.NuevaEntradaSalida(envioDatos)
+        if respuesta == "OK":
+            marcaje.sincronizado = True
+            db.session.commit()
+    except:
+        pass
+
+def sincronizarMarcajesPorTareaFiltradoSoap(url,username,password,registro):
+    try:
+        client = Client(url=url,username=username,password=password)
+        empleado = registro.id_empleado
+        proyecto = registro.proyecto
+        tarea = registro.tarea
+        fecha = registro.fecha
+        horas = registro.tiempo
+        #fecha en formato yyyy-mm-dd
+        fecha = fecha[0:4]+"-"+fecha[5:7]+"-"+fecha[8:10]
+        comentarios = proyecto + " - " + tarea
+        envioDatos = "{\"empleado\":\""+empleado+"\",\"fecha\":\""+fecha+"\",\"horas\":\""+horas+"\",\"comentarios\":\""+comentarios+"\",\"proyecto\":\""+proyecto+"\",\"tarea\":\""+tarea+"\"}"
+        #enviamos datos
+        respuesta = client.service.CreateJobJournalLine(envioDatos)
+        if respuesta == "OK":
+            registro.sincronizado = True
+            db.session.commit()
+    except:
+        pass
+
 
 #Funcion para sincronizar los datos de la base de datos con Business Central
 def sincronizar():
