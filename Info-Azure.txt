@@ -1,0 +1,7 @@
+https://learn.microsoft.com/es-es/azure-stack/user/azure-stack-dev-start-howto-vm-python?view=azs-2206
+
+export FLASK_APP=app.py
+flask run -h 0.0.0.0
+
+sudo apt install python3-flask
+pip3 install -r requirements.txt
