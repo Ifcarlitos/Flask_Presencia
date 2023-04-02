@@ -1,0 +1,40 @@
+{% extends './base.html' %}
+{% block titulo %}Pagina Principal{% endblock %}
+
+{% block body %}
+{% include './nav.html' %}
+
+<form class="form-signin" method="POST" action="">
+    <div class="form-group">
+    {{ form.hidden_tag() }}
+    <label for="username">Usuario</label>
+    {{ form.username }}
+    <label for="nombre">Nombre</label>
+    {{ form.nombre }}
+
+    <label for="apellido">Apellido</label>
+    {{ form.apellido }}
+    <label for="id_Empleado">id Empleado</label>
+    {{ form.id_Empleado }}
+    </div>
+    <div class="checkbox mb-3">
+        <label>
+            {{ form.submit }}
+        </label>
+    </div>
+    <!-- <br>
+    <a href="{{ url_for('register') }}">No tienes cuenta?, registrate!!</a> -->
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#id_Empleado').addClass('form-control');
+        $('#username').addClass('form-control');
+        $('#nombre').addClass('form-control');
+        $('#apellido').addClass('form-control');
+        $('#rol_admin').addClass('form-control');
+        $('#submit').addClass('btn btn-lg btn-primary btn-block');
+    });
+</script>
+
+{% endblock %}

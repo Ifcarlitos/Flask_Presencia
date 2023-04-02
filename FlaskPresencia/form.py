@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, BooleanField
 from wtforms.validators import Length, ValidationError, InputRequired
 from FlaskPresencia.models import *
 
@@ -78,5 +78,18 @@ class FormConfiguacion(FlaskForm):
     id="secretClienteBC", label="secretClienteBC")
     empresaBC = StringField(validators=[InputRequired(), Length(min=0, max=50)], render_kw={"placeholder": "empresaBC"},
     id="empresaBC", label="empresaBC")
+    submit = SubmitField('Editar', id="submit")
+
+
+class FormEmpleado(FlaskForm):
+    #Mostrar label en el formulario
+    username = StringField(validators=[InputRequired(), Length(min=0, max=50)], render_kw={"placeholder": "username"},
+    id="username", label="Nombre de usuario")
+    nombre = StringField(validators=[InputRequired(), Length(min=0, max=50)], render_kw={"placeholder": "nombre"},
+    id="nombre", label="Nombre")
+    apellido = StringField(validators=[InputRequired(), Length(min=0, max=50)], render_kw={"placeholder": "apellido"},
+    id="apellido", label="Apellido")
+    id_Empleado = StringField(validators=[InputRequired(), Length(min=0, max=50)], render_kw={"placeholder": "id_Empleado"},
+    id="id_Empleado", label="ID Empleado")
     submit = SubmitField('Editar', id="submit")
 

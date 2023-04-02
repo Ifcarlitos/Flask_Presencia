@@ -282,6 +282,48 @@ def VerEmpleados():
     usuarios = User.query.all()
     return render_template('VerEmpleados.html', usuarios=usuarios)
 
+#editar_empleado
+@app.route('/Herramientas/EditarEmpleado/<id>', methods=['GET', 'POST'])
+@login_required
+def editar_empleado(id):
+    empleado = User.query.filter_by(id=id).first()
+    if empleado:
+        formulario = FormEmpleado(formdata=request.form, obj=empleado)
+        #preparar el formulario
+        if request.method == 'POST' and formulario.validate():
+            #guardar los datos del formulario en la base de datos
+            formulario.populate_obj(empleado)
+            db.session.commit()
+            return redirect(url_for('Herramientas'))
+        return render_template('EditarEmpleado.html', form=formulario)
+    else:
+        return redirect(url_for('inicio'))
+
+#eliminar_empleado
+@app.route('/Herramientas/EliminarEmpleado/<id>', methods=['GET', 'POST'])
+@login_required
+def eliminar_empleado(id):
+    empleado = User.query.filter_by(id=id).first()
+    if empleado:
+        db.session.delete(empleado)
+        db.session.commit()
+        return redirect(url_for('Herramientas'))
+    else:
+        return redirect(url_for('inicio'))
+      
+#hacer_admin
+@app.route('/Herramientas/HacerAdmin/<id>', methods=['GET', 'POST'])
+@login_required
+def hacer_admin(id):
+    user = User.query.filter_by(id=id).first()
+    if user:
+        if user.rol_admin == True:
+            user.rol_admin = False
+        else:
+            user.rol_admin = True
+        db.session.commit()
+        return redirect(url_for('Herramientas'))
+
 @app.route('/Herramientas/Proyectos', methods=['GET', 'POST'])
 @login_required
 def Proyectos():

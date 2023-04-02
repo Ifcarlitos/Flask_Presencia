@@ -5,6 +5,9 @@
         <th>Nombre</th>
         <th>Apellido</th>
         <th>rol_admin</th>
+        <th></th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -14,6 +17,14 @@
           <td>{{ user.nombre }}</td>
           <td>{{ user.apellido }}</td>
           <td>{{ user.rol_admin }}</td>
+          <td><a href="{{ url_for('editar_empleado', id=user.id) }}" class="btn btn-primary">Editar</a></td>
+          <td><a href="{{ url_for('eliminar_empleado', id=user.id) }}" class="btn btn-danger">Eliminar</a></td>
+          <!-- accion hacer admin -->
+          {% if user.rol_admin == 0 %}
+            <td><a href="{{ url_for('hacer_admin', id=user.id) }}" class="btn btn-success">Hacer Admin</a></td>
+          {% else %}
+            <td><a href="{{ url_for('hacer_admin', id=user.id) }}" class="btn btn-warning">Quitar Admin</a></td>
+          {% endif %}
         </tr>
       {% endfor %}
     </tbody>
