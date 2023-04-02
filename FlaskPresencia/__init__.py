@@ -6,7 +6,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from FlaskPresencia.config import config
 
 app = Flask(__name__)
-app.config.from_object(config['development2'])
+app.config.from_object(config['development'])
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 

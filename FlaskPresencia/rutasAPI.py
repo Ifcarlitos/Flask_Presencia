@@ -143,6 +143,6 @@ def ComprobarUsuario(usuario, password):
     if bcrypt.check_password_hash(user.password, password) == False:
         return 'Error', 'Contraseña incorrecta'
     #mirar si el usuario tiene permisos admin
-    if user.rol_admin == False:
-        return 'Error', 'Usuario no tiene permisos'
+    # if user.rol_admin == False:
+    #     return 'Error', 'Usuario no tiene permisos'
     return 'OK', 'Usuario correcto'
