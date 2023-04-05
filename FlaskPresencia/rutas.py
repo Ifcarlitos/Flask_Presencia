@@ -12,7 +12,7 @@ import time
 import pandas as pd
 import xlsxwriter
 import io
-
+import datetime
 #configuracion de la app:
 from FlaskPresencia import app, db, bcrypt, login_manager
 from FlaskPresencia.models import *
@@ -107,6 +107,7 @@ def enviarRegistros():
         return 'La tarea no existe'
     #creamos el RegistroMarcajePorTarea
     fecha = time.strftime("%Y-%m-%d")
+    fecha = datetime.datetime.now().strftime("%d/%m/%Y")
     registro = RegistroMarcajePorTarea(proyecto=idproyecto, tarea=idtarea, id_empleado=idempleado, tiempo=valor, fecha=fecha)
     db.session.add(registro)
     db.session.commit()
@@ -124,6 +125,15 @@ def enviarRegistros():
             tenant = '5f5f63d8-e0f2-4301-9e3e-8817644d3071'
             empresa = '''CRONUS%20ES'''  
             sincronizarMarcajesPorTareaFiltradoOdata(tenant,idapp,valor,empresa, registro)
+        if configuracion.TipoConexionBC == 'Soap':
+                url = configuracion.urlBC
+                username = configuracion.usuarioSOAP
+                password = configuracion.passwordSOAP
+                print(url)
+                print(username)
+                print(password)
+                sincronizarMarcajesPorTareaFiltradoSoap(url, username, password, registro)
+
     return 'ok'
 
 #Ruta para la configuracion de la aplicacion:
@@ -928,6 +938,7 @@ def sincronizarMarcajeFiltradoOdata(tenant,idapp,valor,empresa, marcaje):
         fecha = marcaje.fecha
         #fecha en formato dd/mm/yyyy
         fecha = fecha[8:10]+"/"+fecha[5:7]+"/"+fecha[0:4]
+        fecha = datetime.datetime.now().strftime("%d/%m/%Y")
         hora = marcaje.hora
         tipo = marcaje.tipo
         envioDatos = json.dumps({"input": "{\"empleado\":\""+empleado+"\",\"fecha\":\""+fecha+"\",\"hora\":\""+hora+"\",\"tipo\":\""+tipo+"\"}"})
@@ -950,6 +961,7 @@ def sincronizarMarcajesPorTareaFiltradoOdata(tenant,idapp,valor,empresa,registro
         horas = registro.tiempo
         #fecha en formato yyyy-mm-dd
         fecha = fecha[0:4]+"-"+fecha[5:7]+"-"+fecha[8:10]
+        fecha = datetime.datetime.now().strftime("%d/%m/%Y")
         comentarios = proyecto + " - " + tarea
         envioDatos = json.dumps({"input": "{\"empleado\":\""+empleado+"\",\"fecha\":\""+fecha+"\",\"horas\":\""+horas+"\",\"comentarios\":\""+comentarios+"\",\"proyecto\":\""+proyecto+"\",\"tarea\":\""+tarea+"\"}"})
         #enviamos datos
@@ -1094,6 +1106,7 @@ def sincronizarMarcajesOdata(tenant,idapp,valor,empresa):
             fecha = marcaje.fecha
             #fecha en formato dd/mm/yyyy
             fecha = fecha[8:10]+"/"+fecha[5:7]+"/"+fecha[0:4]
+            fecha = datetime.datetime.now().strftime("%d/%m/%Y")
             hora = marcaje.hora
             tipo = marcaje.tipo
             envioDatos = json.dumps({"input": "{\"empleado\":\""+empleado+"\",\"fecha\":\""+fecha+"\",\"hora\":\""+hora+"\",\"tipo\":\""+tipo+"\"}"})
@@ -1122,6 +1135,7 @@ def sincronizarMarcajesPorTareaOdata(tenant,idapp,valor,empresa):
             horas = registro.tiempo
             #fecha en formato yyyy-mm-dd
             fecha = fecha[0:4]+"-"+fecha[5:7]+"-"+fecha[8:10]
+            fecha = datetime.datetime.now().strftime("%d/%m/%Y")
             comentarios = proyecto + " - " + tarea
 
             envioDatos = json.dumps({"input": "{\"empleado\":\""+empleado+"\",\"fecha\":\""+fecha+"\",\"horas\":\""+horas+"\",\"comentarios\":\""+comentarios+"\",\"proyecto\":\""+proyecto+"\",\"tarea\":\""+tarea+"\"}"})
@@ -1140,13 +1154,15 @@ def sincronizarMarcajesPorTareaOdata(tenant,idapp,valor,empresa):
 
 #Soap:
 def sincronizarMarcajeFiltradpSOAP(url,username,password,marcaje):
-    try:
+    #try:
         client = Client(url=url,username=username,password=password)
         #creamos json de envio
         empleado = marcaje.id_empleado
         fecha = marcaje.fecha
         #fecha en formato dd/mm/yyyy
         fecha = fecha[8:10]+"/"+fecha[5:7]+"/"+fecha[0:4]
+        #fecha de hoy en formato dd/mm/yyyy
+        fecha = datetime.datetime.now().strftime("%d/%m/%Y")
         hora = marcaje.hora
         tipo = marcaje.tipo
         envioDatos = "{\"empleado\":\""+empleado+"\",\"fecha\":\""+fecha+"\",\"hora\":\""+hora+"\",\"tipo\":\""+tipo+"\"}"
@@ -1154,8 +1170,8 @@ def sincronizarMarcajeFiltradpSOAP(url,username,password,marcaje):
         if respuesta == "OK":
             marcaje.sincronizado = True
             db.session.commit()
-    except:
-        pass
+    #except:
+        #pass
 
 def sincronizarMarcajesPorTareaFiltradoSoap(url,username,password,registro):
     try:
@@ -1167,6 +1183,7 @@ def sincronizarMarcajesPorTareaFiltradoSoap(url,username,password,registro):
         horas = registro.tiempo
         #fecha en formato yyyy-mm-dd
         fecha = fecha[0:4]+"-"+fecha[5:7]+"-"+fecha[8:10]
+        fecha = datetime.datetime.now().strftime("%d/%m/%Y")
         comentarios = proyecto + " - " + tarea
         envioDatos = "{\"empleado\":\""+empleado+"\",\"fecha\":\""+fecha+"\",\"horas\":\""+horas+"\",\"comentarios\":\""+comentarios+"\",\"proyecto\":\""+proyecto+"\",\"tarea\":\""+tarea+"\"}"
         #enviamos datos
@@ -1306,6 +1323,7 @@ def sincronizarMarcajesSoap(url,username,password):
             fecha = marcaje.fecha
             #fecha en formato dd/mm/yyyy
             fecha = fecha[8:10]+"/"+fecha[5:7]+"/"+fecha[0:4]
+            fecha = datetime.datetime.now().strftime("%d/%m/%Y")
             hora = marcaje.hora
             tipo = marcaje.tipo
             envioDatos = json.dumps({"input": "{\"empleado\":\""+empleado+"\",\"fecha\":\""+fecha+"\",\"hora\":\""+hora+"\",\"tipo\":\""+tipo+"\"}"})
@@ -1335,6 +1353,7 @@ def sincronizarMarcajesPorTareaSoap(url,username,password):
             horas = registro.tiempo
             #fecha en formato yyyy-mm-dd
             fecha = fecha[0:4]+"-"+fecha[5:7]+"-"+fecha[8:10]
+            fecha = datetime.datetime.now().strftime("%d/%m/%Y")
             comentarios = proyecto + " - " + tarea
 
             envioDatos = json.dumps({"input": "{\"empleado\":\""+empleado+"\",\"fecha\":\""+fecha+"\",\"horas\":\""+horas+"\",\"comentarios\":\""+comentarios+"\",\"proyecto\":\""+proyecto+"\",\"tarea\":\""+tarea+"\"}"})

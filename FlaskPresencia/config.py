@@ -10,6 +10,11 @@ class Developement2():
     SECRET_KEY = 'admin'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+class Developement3():
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///database_prueba3.db'
+    SECRET_KEY = 'admin'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class Production1():
     #utiliza sqlite
@@ -30,5 +35,6 @@ config = {
     'development': Developement,
     'production1': Production1,
     'production2': Production2,
-    'development2': Developement2
+    'development2': Developement2,
+    'development3': Developement3
 }
