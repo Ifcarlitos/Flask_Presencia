@@ -77,6 +77,23 @@
       $("#TablaFilter tr").filter(function() {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
       });
+
+      var table = $('#data').DataTable({
+      "columns": [
+        { "data": "Empleado" },
+        { "data": "Proyecto" },
+        { "data": "Tarea" },
+        { "data": "Fecha" },
+        { "data": "Tiempo" },
+
+        {% if admin  %}
+          { "data": "Sincro" },
+          { "data": "" },
+          { "data": "" },
+
+        {% endif %}
+      ]
+      });
     });
 
     //filtro por empleado filtrar la primera columna

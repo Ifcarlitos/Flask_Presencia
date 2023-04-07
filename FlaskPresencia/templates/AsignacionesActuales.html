@@ -25,3 +25,15 @@
       {% endfor %}
     </tbody>
   </table>
+  <script>
+    $(document).ready(function () {
+    var table = $('#data').DataTable({
+      "columns": [
+        { "data": "Empleado" },
+        { "data": "Tarea" },
+        { "data": "Proyecto" },
+        { "data": "Eliminar" }
+      ]
+    });
+  });
+  </script>

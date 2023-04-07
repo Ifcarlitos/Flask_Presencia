@@ -1,44 +1,58 @@
 <div class="row mt-2">
   <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="crearEmpleado()">
-          <div class="row mt-2">
-              <div class="col-sm">Crear Empleado</div>
-          </div>
+    <div class="row mt-2">
+      <div class="col-sm">Crear Empleado</div>
+    </div>
   </button>
 </div>
 <br>
 <table id="data" class="table table-striped">
-    <thead>
-      <tr>
-        <th>Usuario</th>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>rol_admin</th>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for user in usuarios %}
-        <tr>
-          <td>{{ user.username }}</td>
-          <td>{{ user.nombre }}</td>
-          <td>{{ user.apellido }}</td>
-          <td>{{ user.rol_admin }}</td>
-          <td><a href="{{ url_for('editar_empleado', id=user.id) }}" class="btn btn-primary">Editar</a></td>
-          <td><a href="{{ url_for('eliminar_empleado', id=user.id) }}" class="btn btn-danger">Eliminar</a></td>
-          <!-- accion hacer admin -->
-          {% if user.rol_admin == 0 %}
-            <td><a href="{{ url_for('hacer_admin', id=user.id) }}" class="btn btn-success">Hacer Admin</a></td>
-          {% else %}
-            <td><a href="{{ url_for('hacer_admin', id=user.id) }}" class="btn btn-warning">Quitar Admin</a></td>
-          {% endif %}
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <script>
-    function crearEmpleado(){
-      window.location.href = "{{ url_for('crear_empleado') }}";
-    }
-  </script>
+  <thead>
+    <tr>
+      <th>Usuario</th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>rol_admin</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in usuarios %}
+    <tr>
+      <td>{{ user.username }}</td>
+      <td>{{ user.nombre }}</td>
+      <td>{{ user.apellido }}</td>
+      <td>{{ user.rol_admin }}</td>
+      <td><a href="{{ url_for('editar_empleado', id=user.id) }}" class="btn btn-primary">Editar</a></td>
+      <td><a href="{{ url_for('eliminar_empleado', id=user.id) }}" class="btn btn-danger">Eliminar</a></td>
+      <!-- accion hacer admin -->
+      {% if user.rol_admin == 0 %}
+      <td><a href="{{ url_for('hacer_admin', id=user.id) }}" class="btn btn-success">Hacer Admin</a></td>
+      {% else %}
+      <td><a href="{{ url_for('hacer_admin', id=user.id) }}" class="btn btn-warning">Quitar Admin</a></td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<script>
+  function crearEmpleado() {
+    window.location.href = "{{ url_for('crear_empleado') }}";
+  }
+  //
+  $(document).ready(function () {
+    var table = $('#data').DataTable({
+      "columns": [
+        { "data": "No" },
+        { "data": "Nombre" },
+        { "data": "Apellido" },
+        { "data": "Rol" },
+        { "data": "Editar" },
+        { "data": "Eliminar" },
+        { "data": "Hacer Admin" }
+      ]
+    });
+  });
+</script>
