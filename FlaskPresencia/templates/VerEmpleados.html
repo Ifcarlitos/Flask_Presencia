@@ -1,3 +1,11 @@
+<div class="row mt-2">
+  <button class="col-sm btn btn-primary margin-Botones" type="button" onclick="crearEmpleado()">
+          <div class="row mt-2">
+              <div class="col-sm">Crear Empleado</div>
+          </div>
+  </button>
+</div>
+<br>
 <table id="data" class="table table-striped">
     <thead>
       <tr>
@@ -29,3 +37,8 @@
       {% endfor %}
     </tbody>
   </table>
+  <script>
+    function crearEmpleado(){
+      window.location.href = "{{ url_for('crear_empleado') }}";
+    }
+  </script>

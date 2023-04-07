@@ -91,5 +91,5 @@ class FormEmpleado(FlaskForm):
     id="apellido", label="Apellido")
     id_Empleado = StringField(validators=[InputRequired(), Length(min=0, max=50)], render_kw={"placeholder": "id_Empleado"},
     id="id_Empleado", label="ID Empleado")
-    submit = SubmitField('Editar', id="submit")
+    submit = SubmitField('Guardar', id="submit")
 

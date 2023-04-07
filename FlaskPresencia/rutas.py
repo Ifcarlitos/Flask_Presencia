@@ -324,6 +324,19 @@ def hacer_admin(id):
         db.session.commit()
         return redirect(url_for('Herramientas'))
 
+#crear_empleado
+@app.route('/Herramientas/CrearEmpleado', methods=['GET', 'POST'])
+@login_required
+def crear_empleado():    
+    form = FormEmpleado()
+    if form.validate_on_submit():
+        hashed_passw = bcrypt.generate_password_hash('admin123456789').decode('utf-8')
+        new_user = User(username=form.username.data, password=hashed_passw, id_Empleado=form.id_Empleado.data, nombre=form.nombre.data, apellido=form.apellido.data)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('Herramientas'))
+    return render_template('EditarEmpleado.html', form=form)
+
 @app.route('/Herramientas/Proyectos', methods=['GET', 'POST'])
 @login_required
 def Proyectos():
