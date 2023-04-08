@@ -1,6 +1,6 @@
-<p>Buscardor En la tabla</p>
+<!-- <p>Buscardor En la tabla</p>
 <input class="form-control" id="Buscador" type="text" placeholder="Search..">
-<br>
+<br> -->
 <div class="table-responsive">
 <table id="data" class="table table-striped">
     <thead>
@@ -17,7 +17,7 @@
         {% endif %}
       </tr>
       {% if herramientas %}
-      <tr>
+      <!-- <tr>
         <th>
           <select id="FiltroEmpleado" class="form-select">
             <option value="todo" selected>Filtro Empleado</option>
@@ -49,7 +49,7 @@
           <th></th>
           <th></th>
         {% endif %}
-      </tr>
+      </tr> -->
       {% endif %}
     </thead>
     <tbody id="TablaFilter">
@@ -70,7 +70,8 @@
     </tbody>
   </table>
 </div>
-<script>
+<!-- <script>
+
   $(document).ready(function(){
     $("#Buscador").on("keyup", function() {
       var value = $(this).val().toLowerCase();
@@ -139,4 +140,39 @@
     });
 
   });
+  </script> -->
+
+  {% if admin  %}
+  <script>
+    $(document).ready(function(){
+      var table = $('#data').DataTable({
+        "columns": [
+          { "data": "Empleado" },
+          { "data": "Proyecto" },
+          { "data": "Tarea" },
+          { "data": "Fecha" },
+          { "data": "Tiempo" },
+          { "data": "Sincro" },
+          { "data": "Editar" },
+          { "data": "Eliminar" }
+        ]
+      });
+    });
   </script>
+  {% endif %}
+  
+  {% if admin==FALSE  %}
+  <script>
+  $(document).ready(function(){
+      var table = $('#data').DataTable({
+        "columns": [
+          { "data": "Empleado" },
+          { "data": "Proyecto" },
+          { "data": "Tarea" },
+          { "data": "Fecha" },
+          { "data": "Tiempo" }
+        ]
+      });
+    });
+  </script>
+  {% endif %}

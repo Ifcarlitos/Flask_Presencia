@@ -1,6 +1,6 @@
-<p>Buscardor En la tabla</p>
+<!-- <p>Buscardor En la tabla</p>
 <input class="form-control" id="Buscador" type="text" placeholder="Search..">
-<br>
+<br> -->
 <div class="table-responsive-xl">
   <table id="data" class="table table-bordered table-striped">
     <thead>
@@ -15,7 +15,7 @@
         <th></th>
         {% endif %}
       </tr>
-      {% if herramientas %}
+      <!-- {% if herramientas %}
       <tr>
         <th>
           <select id="FiltroEmpleado" class="form-select">
@@ -42,7 +42,7 @@
           <th></th>
         {% endif %}
       </tr>
-      {% endif %}
+      {% endif %} -->
     </thead>
     <tbody id="TablaFilter">
       {% for registro in registros %}
@@ -63,38 +63,68 @@
     </tbody>
   </table>
 </div>
+{% if admin  %}
 <script>
   $(document).ready(function(){
-    $("#Buscador").on("keyup", function() {
-      var value = $(this).val().toLowerCase();
-      $("#TablaFilter tr").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-      });
+    var table = $('#data').DataTable({
+      "columns": [
+        { "data": "Empleado" },
+        { "data": "Tipo" },
+        { "data": "Fecha" },
+        { "data": "Hora" },
+        { "data": "Sincro" },
+        { "data": "Eliminar" },
+        { "data": "Editar" }
+      ]
     });
 
-        //filtro por empleado filtrar la primera columna
-  $("#FiltroEmpleado").on("change", function() {
-      var value = $(this).val();
-      if(value == "todo"){
-        value = "";
-      }
-      $("#TablaFilter tr").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-      });
-      //poner filtro por proyecto y tarea en todos
-      $("#FiltroTipo").val("todo");
-    });
+  //   $("#Buscador").on("keyup", function() {
+  //     var value = $(this).val().toLowerCase();
+  //     $("#TablaFilter tr").filter(function() {
+  //       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+  //     });
+  //   });
 
-    //filtro por proyecto filtrar la segunda columna
-    $("#FiltroTipo").on("change", function() {
-      var value = $(this).val();
-      if(value == "todo"){
-        value = "";
-      }
-      $("#TablaFilter tr").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-      });
-      $("#FiltroEmpleado").val("todo");
+  //       //filtro por empleado filtrar la primera columna
+  // $("#FiltroEmpleado").on("change", function() {
+  //     var value = $(this).val();
+  //     if(value == "todo"){
+  //       value = "";
+  //     }
+  //     $("#TablaFilter tr").filter(function() {
+  //       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+  //     });
+  //     //poner filtro por proyecto y tarea en todos
+  //     $("#FiltroTipo").val("todo");
+  //   });
+
+  //   //filtro por proyecto filtrar la segunda columna
+  //   $("#FiltroTipo").on("change", function() {
+  //     var value = $(this).val();
+  //     if(value == "todo"){
+  //       value = "";
+  //     }
+  //     $("#TablaFilter tr").filter(function() {
+  //       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+  //     });
+  //     $("#FiltroEmpleado").val("todo");
+  //   });
+  });
+</script>
+{% endif %}
+
+{% if admin==FALSE  %}
+<script>
+$(document).ready(function(){
+    var table = $('#data').DataTable({
+      "columns": [
+        { "data": "No" },
+        { "data": "Empleado" },
+        { "data": "Tipo" },
+        { "data": "Fecha" },
+        { "data": "Hora" }
+      ]
     });
   });
-  </script>
+</script>
+{% endif %}
