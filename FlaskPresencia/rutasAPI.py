@@ -134,6 +134,38 @@ def obtenerMarcageTareaAPI():
         marcajes_json.append({'id_empleado':marcaje.id_empleado, 'fecha':marcaje.fecha, 'tiempo':marcaje.tiempo, 'tarea':marcaje.tarea, 'proyecto':marcaje.proyecto})
     return json.dumps({'status':'OK', 'mensaje':'Marcage obtenidos', 'datos':marcajes_json})
 
+
+#ultimmo marcaje
+@app.route('/api/obtenerUltimoMarcageAPI', methods=['POST'])
+def obtenerUltimoMarcageAPI():
+    #obtener datos de json
+    data = request.get_json()
+    #mirar si existe el usuario de conexion
+    DatosConexion  = data['DatosConexion']
+    print(DatosConexion)
+    usuario = DatosConexion['usuario']
+    password = DatosConexion['password']
+    
+    estado, mensaje = ComprobarUsuario(usuario, password)
+    if estado == 'Error':
+        return json.dumps({'status':'ERROR', 'mensaje':mensaje})
+    
+    #Si no hay errores, obtener marcajes
+    #mirar si existe datosMarcage en el json
+    if 'datosMarcage' not in data:
+        id_empleado = usuario
+        print(id_empleado)
+    else:
+        datosMarcage = data['datosMarcage']
+        #obtener datos de la conexion
+        id_empleado = datosMarcage['id_empleado']
+
+    #obtener el ultimo marcaje de la base de datos
+    marcaje = RegistroMarcaje.query.filter_by(id_empleado=id_empleado).order_by(RegistroMarcaje.id.desc()).first()
+    #convertir a json
+    marcaje_json = {'id_empleado':marcaje.id_empleado, 'fecha':marcaje.fecha, 'hora':marcaje.hora, 'tipo':marcaje.tipo}
+    return json.dumps({'status':'OK', 'mensaje':'Ultimo marcage obtenido', 'datos':marcaje_json})
+
 def ComprobarUsuario(usuario, password):
     #mirar si existe el usuario de conexion
     user = User.query.filter_by(username=usuario).first()
