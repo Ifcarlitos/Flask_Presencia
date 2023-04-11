@@ -133,68 +133,29 @@ def Configuracion():
     #comprobar si el usuario es de rol administrador
     user = User.query.filter_by(username=current_user.username).first()
     if user.rol_admin == True:
-        #configuracion id ver si existe o no
         configuracion = Config.query.filter_by(id=0).first()
-        if configuracion == None:
-            configuracion = Config(id=0,Empresa= '')
-        return render_template('Config.html', config=configuracion)
-    else:
-        return redirect(url_for('inicio'))
+        if configuracion:
+            #si existe la configuracion, cargar el formulario con los datos de la base de datos
+            formulario = FormConfiguacion(formdata=request.form, obj=configuracion)
+            if request.method == 'POST' :
+                #actualizar los datos de la base de datos
+                configuracion.Empresa = formulario.Empresa.data
+                configuracion.TipoConexionBC = formulario.TipoConexionBC.data
+                configuracion.IdClienteBC = formulario.idClienteBC.data
+                configuracion.secretClienteBC = formulario.secretClienteBC.data
+                configuracion.tenantBC = formulario.tenantBC.data
+                configuracion.empresaBC = formulario.empresaBC.data
+                configuracion.urlBC = formulario.urlBC.data
+                configuracion.usuarioSOAP = formulario.usuarioSOAP.data
+                configuracion.passwordSOAP = formulario.passwordSOAP.data
 
-#ruta para actualizar la configuracion de la aplicacion:
-@app.route('/actualizarDatos', methods=['GET', 'POST'])
-@login_required
-def actualizarDatos():
-    #comprobar si el usuario es de rol administrador
-    user = User.query.filter_by(username=current_user.username).first()
-    if user.rol_admin == True:
-        #configuracion id ver si existe o no
-        configuracion = Config.query.filter_by(id=0).first()
-        if configuracion == None:
-            configuracion = Config(id=0,Empresa= '')
-            db.session.add(configuracion)
-            db.session.commit()
-
-        if request.method == 'POST':
-            datos = request.data
-            #convertir a text
-            datos = datos.decode('utf-8')
-            #separar por &
-            datos = datos.split('&')
-            #separar por =
-            datos = [dato.split('=') for dato in datos]
-            
-            empresa = datos[0][1]
-            ImgEmpresaBase64 = datos[1][1]
-            ImgEmpresaTipo = datos[2][1]
-            TipoConexionBC = datos[3][1]
-            urlBC = datos[4][1]
-            usuarioSOAP = datos[5][1]
-            passwordSOAP = datos[6][1]
-            tenantBC = datos[7][1]
-            idClienteBC = datos[8][1]
-            empresaBC = datos[9][1]
-            moduloBotTelegram = datos[10][1]
-            tokenBotTelegram = datos[11][1]
-            secretClienteBC = datos[12][1]
-
-            #actualizar datos
-            configuracion.Empresa = empresa
-            configuracion.ImgEmpresaBase64 = ImgEmpresaBase64
-            configuracion.ImgEmpresaTipo = ImgEmpresaTipo
-            configuracion.TipoConexionBC = TipoConexionBC
-            configuracion.urlBC = urlBC
-            configuracion.usuarioSOAP = usuarioSOAP
-            configuracion.passwordSOAP = passwordSOAP
-            configuracion.tenantBC = tenantBC
-            configuracion.idClienteBC = idClienteBC
-            configuracion.empresaBC = empresaBC
-            #configuracion.moduloBotTelegram = moduloBotTelegram
-            configuracion.tokenBotTelegram = tokenBotTelegram
-            configuracion.secretClienteBC = secretClienteBC
-            #actualizar en la base de datos
-            db.session.commit()
-            return 'OK'
+                #guardar los datos del formulario en la base de datos
+                formulario.populate_obj(configuracion)
+                db.session.commit()
+                return redirect(url_for('Herramientas'))
+            return render_template('EditarConfiguracion.html', form=formulario)
+        else:
+            return redirect(url_for('inicio'))
     else:
         return redirect(url_for('inicio'))
 

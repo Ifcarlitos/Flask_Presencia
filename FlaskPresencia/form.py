@@ -55,13 +55,9 @@ class EditRegistroMarcajePorTarea(FlaskForm):
     submit = SubmitField('Editar', id="submit")
 
 class FormConfiguacion(FlaskForm):
+    #id valor por defecto 0
     Empresa = StringField(validators=[InputRequired(), Length(min=0, max=50)], render_kw={"placeholder": "Empresa"},
     id="Empresa", label="Empresa")
-    ImgEmpresaBase64 = StringField(validators=[InputRequired(), Length(min=0, max=50)], render_kw={"placeholder": "ImgEmpresaBase64"},
-    id="ImgEmpresaBase64", label="ImgEmpresaBase64")
-    ImgEmpresaTipo = StringField(validators=[InputRequired(), Length(min=0, max=50)], render_kw={"placeholder": "ImgEmpresaTipo"},
-    id="ImgEmpresaTipo", label="ImgEmpresaTipo")
-    #tipo opciones: <option>Ninguna</option><option>Soap</option><option>Odata</option>
     TipoConexionBC = SelectField(validators=[InputRequired(), Length(min=0, max=50)], render_kw={"placeholder": "TipoConexionBC"},
     id="TipoConexionBC", label="TipoConexionBC", choices=[('Ninguna', 'Ninguna'), ('Soap', 'Soap'), ('Odata', 'Odata')])
     urlBC = StringField(validators=[InputRequired(), Length(min=0, max=50)], render_kw={"placeholder": "urlBC"},
