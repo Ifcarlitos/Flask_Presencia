@@ -2,13 +2,14 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
-
+from flask_cors import CORS
 from FlaskPresencia.config import config
 
 app = Flask(__name__)
 app.config.from_object(config['development'])
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+CORS(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)

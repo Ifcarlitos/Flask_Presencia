@@ -140,6 +140,7 @@ def obtenerMarcageTareaAPI():
 def obtenerUltimoMarcageAPI():
     #obtener datos de json
     data = request.get_json()
+
     #mirar si existe el usuario de conexion
     DatosConexion  = data['DatosConexion']
     print(DatosConexion)
