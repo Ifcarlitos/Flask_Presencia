@@ -11,6 +11,10 @@ ENV FLASK_RUN_HOST 0.0.0.0
 
 Run apk add --no-cache gcc musl-dev linux-headers
 
+RUN apk update
+
+RUN apk add make automake gcc g++ subversion python3-dev
+
 Copy requirements.txt requirements.txt
 
 Run pip install -r requirements.txt

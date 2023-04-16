@@ -4,6 +4,7 @@ Flask-Login==0.6.2
 flask-marshmallow==0.14.0
 Flask-SQLAlchemy==2.5.1
 Flask-WTF==1.0.1
+numpy
 pandas==1.4.3
 adal==1.2.7
 suds==1.1.1
