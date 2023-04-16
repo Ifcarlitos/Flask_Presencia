@@ -901,10 +901,13 @@ def Registrar():
                 tenant = '5f5f63d8-e0f2-4301-9e3e-8817644d3071'
                 empresa = '''CRONUS%20ES'''  
                 sincronizarMarcajeFiltradoOdata(tenant,idapp,valor,empresa, registroMarcajeEmpleado)
-            if configuracion.TipoConexionBC == 'SOAP':
+            if configuracion.TipoConexionBC == 'Soap':
                 url = configuracion.urlBC
                 username = configuracion.usuarioSOAP
                 password = configuracion.passwordSOAP
+                print(url)
+                print(username)
+                print(password)
                 sincronizarMarcajeFiltradpSOAP(url,username,password,registroMarcajeEmpleado)
         return 'OK'
     
@@ -1135,6 +1138,7 @@ def sincronizarMarcajesPorTareaOdata(tenant,idapp,valor,empresa):
             f.write("Error al sincronizar marcaje por tarea: " + str(registro.id))
             f.close()
 
+#Soap:
 def sincronizarMarcajeFiltradpSOAP(url,username,password,marcaje):
     try:
         client = Client(url=url,username=username,password=password)
@@ -1173,13 +1177,143 @@ def sincronizarMarcajesPorTareaFiltradoSoap(url,username,password,registro):
     except:
         pass
 
+def sincronizarEmpleadosSoap(url,username,password):
+    #datos = ws.getConnectionBC(tenant,idapp,valor,"getEmpleados",empresa,"")
+    #datos = json.loads(datos)
+    try: 
+        client = Client(url=url,username=username,password=password)
+        datos = client.service.getEmpleados()
+        datos = json.loads(datos)
+        datos = datos["empleados"]
+        for dato in datos:
+            try:
+                #Buscamos si existe el empleado existe en user
+                user = User.query.filter_by(id_Empleado=dato["id"]).first()
+                if user is None:
+                    #Si no existe lo creamos
+                    has_password = Bcrypt().generate_password_hash('admin').decode('utf-8')
+                    admin = User(username=dato["id"], password=has_password, nombre=dato["nombre"], apellido=dato["apellidos"], id_Empleado=dato["id"], rol_admin=False)
+                    db.session.add(admin)
+                    db.session.commit()
+                else:
+                    #Si existe lo actualizamos
+                    user.nombre = dato["nombre"]
+                    user.apellido = dato["apellidos"]
+                    db.session.commit()
+            except:
+                #si hya error escribimos en el archivo log
+                f = open("log.txt", "a")
+                f.write("Error al sincronizar empleados "+str(dato))
+                f.close()
+    except:
+        #si hya error escribimos en el archivo log
+        f = open("log.txt", "a")
+        f.write("Error al sincronizar empleados "+str(datos))
+        f.close()
+
+# def sincronizarProyectosSoap(url,username,password):
+#     datos = ws.getConnectionBC(tenant,idapp,valor,"GetJob",empresa,"")
+#     datos = json.loads(datos)
+
+#     try:
+#         datos = datos["value"]
+#         datos = json.loads(datos)
+#         proyectos = datos["proyectos"]
+#         tareas = datos["tareas"]
+
+#         for proyecto in proyectos:
+#             try:
+#                 #Buscamos si existe el proyecto en la base de datos
+#                 proyectoBD = Proyecto.query.filter_by(id_proyecto=proyecto["proyecto"]).first()
+#                 if proyectoBD is None:
+#                     #Si no existe lo creamos
+#                     admin = Proyecto(id_proyecto=proyecto["proyecto"], nombre_proyecto=proyecto["descripcion"], id_cliente=proyecto["idCliente"], nombre_cliente=proyecto["cliente"])
+#                     db.session.add(admin)
+#                     db.session.commit()
+#                 else:
+#                     #Si existe lo actualizamos
+#                     proyectoBD.nombre = proyecto["nombre"]
+#                     proyectoBD.id_cliente = proyecto["id_cliente"]
+#                     proyectoBD.nombre_cliente = proyecto["nombre_cliente"]
+#                     db.session.commit()
+#             except:
+#                 #si hya error escribimos en el archivo log
+#                 f = open("log.txt", "a")
+#                 f.write("Error al sincronizar proyectos "+str(proyecto))
+#                 f.close()
+        
+#         for tarea in tareas:
+#             try:
+#                 #Buscamos si existe la tarea en la base de datos
+#                 tareaBD = Tarea.query.filter_by(id_tarea=tarea["tarea"], id_proyecto=tarea["proyecto"]).first()
+#                 if tareaBD is None:
+#                     #Si no existe lo creamos
+#                     admin = Tarea(id_tarea=tarea["tarea"], nombre_tarea=tarea["descripcion"], id_proyecto=tarea["proyecto"], nombre_proyecto=tarea["descripcionProyecto"])
+#                     db.session.add(admin)
+#                     db.session.commit()
+#                 else:
+#                     #Si existe lo actualizamos
+#                     tareaBD.nombre_tarea = tarea["descripcion"]
+#                     tareaBD.nombre_proyecto = tarea["descripcionProyecto"]
+#                     db.session.commit()
+#             except:
+#                 #si hya error escribimos en el archivo log
+#                 f = open("log.txt", "a")
+#                 f.write("Error al sincronizar tareas "+str(tarea))
+#                 f.close()
+#     except:
+#         #si hya error escribimos en el archivo log
+#         f = open("log.txt", "a")
+#         f.write("Error al sincronizar proyectos "+str(datos))
+#         f.close()
+
+# def sincronizarTareasEmpleadosSoap(url,username,password):
+#     #getTareasEmpleado
+#     datos = ws.getConnectionBC(tenant,idapp,valor,"getTareasEmpleado",empresa,"")
+#     datos = json.loads(datos)
+#     try:
+#         datos = datos["value"]
+#         datos = json.loads(datos)
+#         datos = datos["tareasEmpleado"]
+#         for dato in datos:
+#             try:
+#                 #si existe en TareaEmpleado
+#                 tareaEmpleado = TareaEmpleado.query.filter_by(id_empleado=dato["empleado"], id_tarea=dato["tarea"], id_proyecto=dato["proyecto"]).first()
+#                 if tareaEmpleado is None:
+#                     #Si no existe lo creamos
+#                     admin = TareaEmpleado(id_empleado=dato["empleado"], id_tarea=dato["tarea"], id_proyecto=dato["proyecto"], nombre_tarea=dato["descripcionTarea"], nombre_proyecto=dato["descripcionProyecto"])
+#                     db.session.add(admin)
+#                     db.session.commit()
+#                 else:
+#                     #Si existe lo actualizamos
+#                     tareaEmpleado.nombre_tarea = dato["descripcionTarea"]
+#                     tareaEmpleado.nombre_proyecto = dato["descripcionProyecto"]
+#                     db.session.commit()
+#             except:
+#                 #si hya error escribimos en el archivo log
+#                 f = open("log.txt", "a")
+#                 f.write("Error al sincronizar tareas de empleados "+str(dato))
+#                 f.close()
+#     except:
+#         #si hya error escribimos en el archivo log
+#         f = open("log.txt", "a")
+#         f.write("Error al sincronizar tareas de empleados "+str(datos))
+#         f.close()
 
 #Funcion para sincronizar los datos de la base de datos con Business Central
 def sincronizar():
     configuracion = Config.query.filter_by(id=0).first()
     print(configuracion.TipoConexionBC)
-    if configuracion.TipoConexionBC == "SOAP":
-        print("Conectando con SOAP")
+    if configuracion.TipoConexionBC == "Soap":
+        url = configuracion.urlBC
+        username = configuracion.usuarioSOAP
+        password = configuracion.passwordSOAP
+        
+        print(url)
+        print(username)
+        print(password)
+        sincronizarEmpleadosSoap(url,username,password)
+        
     elif configuracion.TipoConexionBC == "Odata":
         idapp = configuracion.idClienteBC
         valor = configuracion.secretClienteBC

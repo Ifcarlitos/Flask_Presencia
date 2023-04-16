@@ -60,7 +60,7 @@ class FormConfiguacion(FlaskForm):
     id="Empresa", label="Empresa")
     TipoConexionBC = SelectField(validators=[InputRequired(), Length(min=0, max=50)], render_kw={"placeholder": "TipoConexionBC"},
     id="TipoConexionBC", label="TipoConexionBC", choices=[('Ninguna', 'Ninguna'), ('Soap', 'Soap'), ('Odata', 'Odata')])
-    urlBC = StringField(validators=[InputRequired(), Length(min=0, max=50)], render_kw={"placeholder": "urlBC"},
+    urlBC = StringField(validators=[InputRequired(), Length(min=0, max=250)], render_kw={"placeholder": "urlBC"},
     id="urlBC", label="urlBC")
     usuarioSOAP = StringField(validators=[InputRequired(), Length(min=0, max=50)], render_kw={"placeholder": "usuarioSOAP"},
     id="usuarioSOAP", label="usuarioSOAP")
