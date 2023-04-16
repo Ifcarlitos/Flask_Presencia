@@ -8,3 +8,6 @@ pandas==1.4.3
 adal==1.2.7
 suds==1.1.1
 XlsxWriter==3.0.9
+flask_cors
+SQLAlchemy==1.4 
+flask-restx==0.5.1
