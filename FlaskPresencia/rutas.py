@@ -1180,7 +1180,7 @@ def sincronizar():
     print(configuracion.TipoConexionBC)
     if configuracion.TipoConexionBC == "SOAP":
         print("Conectando con SOAP")
-    elif configuracion.TipoConexionBC == "OData":
+    elif configuracion.TipoConexionBC == "Odata":
         idapp = configuracion.idClienteBC
         valor = configuracion.secretClienteBC
         tenant = configuracion.tenantBC
@@ -1191,6 +1191,11 @@ def sincronizar():
         # idsectreto = '79171359-8529-4ee7-95b3-3eacd8a1d081'
         # tenant = '5f5f63d8-e0f2-4301-9e3e-8817644d3071'
         # empresa = '''CRONUS%20ES'''    
+
+        print(tenant)
+        print(idapp)
+        print(valor)
+        print(empresa)
 
         sincronizarEmpleadosOdata(tenant,idapp,valor,empresa)
         sincronizarProyectosOdata(tenant,idapp,valor,empresa)
