@@ -901,15 +901,10 @@ def Registrar():
         configuracion = Config.query.filter_by(id=0).first()
         if configuracion != None:
             if configuracion.TipoConexionBC == 'Odata':
-                # idapp = configuracion.IdClienteBC
-                # valor = configuracion.secretClienteBC
-                # tenant = configuracion.tenantBC
-                # empresa = configuracion.empresaBC
-                idapp = '44dd2790-02fb-42c0-9d0d-36eeb8fd4cee'
-                valor = 'VO_8Q~e6XM7isBVpsCGPViyuMyTTRSSCewoIfat4'
-                idsectreto = '79171359-8529-4ee7-95b3-3eacd8a1d081'
-                tenant = '5f5f63d8-e0f2-4301-9e3e-8817644d3071'
-                empresa = '''CRONUS%20ES'''  
+                idapp = configuracion.IdClienteBC
+                valor = configuracion.secretClienteBC
+                tenant = configuracion.tenantBC
+                empresa = configuracion.empresaBC
                 sincronizarMarcajeFiltradoOdata(tenant,idapp,valor,empresa, registroMarcajeEmpleado)
             if configuracion.TipoConexionBC == 'Soap':
                 url = configuracion.urlBC
@@ -1154,7 +1149,7 @@ def sincronizarMarcajesPorTareaOdata(tenant,idapp,valor,empresa):
 
 #Soap:
 def sincronizarMarcajeFiltradpSOAP(url,username,password,marcaje):
-    #try:
+    try:
         client = Client(url=url,username=username,password=password)
         #creamos json de envio
         empleado = marcaje.id_empleado
@@ -1170,8 +1165,8 @@ def sincronizarMarcajeFiltradpSOAP(url,username,password,marcaje):
         if respuesta == "OK":
             marcaje.sincronizado = True
             db.session.commit()
-    #except:
-        #pass
+    except:
+        pass
 
 def sincronizarMarcajesPorTareaFiltradoSoap(url,username,password,registro):
     try:
