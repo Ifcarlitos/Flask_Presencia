@@ -6,7 +6,7 @@ from flask_cors import CORS
 from FlaskPresencia.config import config
 
 app = Flask(__name__)
-app.config.from_object(config['production1'])
+app.config.from_object(config['demo'])
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 CORS(app)
