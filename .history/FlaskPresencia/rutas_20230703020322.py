@@ -115,10 +115,15 @@ def enviarRegistros():
     configuracion = Config.query.filter_by(id=0).first()
     if configuracion != None:
         if configuracion.TipoConexionBC == 'Odata':
-            idapp = configuracion.IdClienteBC
-            valor = configuracion.secretClienteBC
-            tenant = configuracion.tenantBC
-            empresa = configuracion.empresaBC
+            # idapp = configuracion.IdClienteBC
+            # valor = configuracion.secretClienteBC
+            # tenant = configuracion.tenantBC
+            # empresa = configuracion.empresaBC
+            idapp = '44dd2790-02fb-42c0-9d0d-36eeb8fd4cee'
+            valor = 'VO_8Q~e6XM7isBVpsCGPViyuMyTTRSSCewoIfat4'
+            idsectreto = '79171359-8529-4ee7-95b3-3eacd8a1d081'
+            tenant = '5f5f63d8-e0f2-4301-9e3e-8817644d3071'
+            empresa = '''CRONUS%20ES'''  
             sincronizarMarcajesPorTareaFiltradoOdata(tenant,idapp,valor,empresa, registro)
         if configuracion.TipoConexionBC == 'Soap':
                 url = configuracion.urlBC
@@ -1177,9 +1182,6 @@ def sincronizarMarcajesPorTareaFiltradoSoap(url,username,password,registro):
         comentarios = proyecto + " - " + tarea
         envioDatos = "{\"empleado\":\""+empleado+"\",\"fecha\":\""+fecha+"\",\"horas\":\""+horas+"\",\"comentarios\":\""+comentarios+"\",\"proyecto\":\""+proyecto+"\",\"tarea\":\""+tarea+"\"}"
         #enviamos datos
-
-        print(envioDatos)
-
         respuesta = client.service.CreateJobJournalLine(envioDatos)
         if respuesta == "OK":
             registro.sincronizado = True
@@ -1351,7 +1353,6 @@ def sincronizarMarcajesPorTareaSoap(url,username,password):
 
             envioDatos = json.dumps({"input": "{\"empleado\":\""+empleado+"\",\"fecha\":\""+fecha+"\",\"horas\":\""+horas+"\",\"comentarios\":\""+comentarios+"\",\"proyecto\":\""+proyecto+"\",\"tarea\":\""+tarea+"\"}"})
             #enviamos datos
-            print(envioDatos)
             client = Client(url=url,username=username,password=password)
             datos = client.service.CreateJobJournalLine(envioDatos)
             datos = json.loads(datos)
@@ -1359,7 +1360,6 @@ def sincronizarMarcajesPorTareaSoap(url,username,password):
             if datos == "OK":
                 registro.sincronizado = True
                 db.session.commit()
-            
         except:
             #crear arhivo de log
             f = open("log.txt", "a")

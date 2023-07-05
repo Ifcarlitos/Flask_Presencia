@@ -48,6 +48,6 @@ config = {
     'production2': Production2,
     'development2': Developement2,
     'development3': Developement3,
-    'demo': Demo,
+    'demo': Demo
     'demo2': Demo2
 }
